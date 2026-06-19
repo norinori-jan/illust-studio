@@ -1,4 +1,4 @@
-何も選択されていません 
+何も選択されていません
 
 コンテンツへ
 Gmail でのスクリーン リーダーの使用
@@ -14,1754 +14,924 @@ AI なら多くの作業を短時間で
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Illust Studio — 頭の中を形に</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Concept — Illust Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+/* ── TOKENS（draw/index.htmlと完全一致） ── */
 :root {
-  --paper: #F7F3EE;
-  --paper-dark: #EDE8E1;
-  --ink: #3D3834;
-  --ink-light: #7A7069;
-  --navy: #1A2744;
-  --red: #C0392B;
-  --blue: #2980B9;
-  --gold: #D4A843;
-  --green: #27AE60;
-  --purple: #8E44AD;
-  --radius: 12px;
-  --shadow: 0 2px 16px rgba(61,56,52,0.10);
+  --paper: #F8F5F0;
+  --paper2: #EDE8E0;
+  --ink: #2E2A26;
+  --ink2: #7A7269;
+  --navy: #1C2B4A;
+  --gold: #C8963C;
+  --red: #B83A2E;
+  --sage: #4A7C5A;
+  --r: 10px;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: var(--navy); }
 body {
   font-family: 'Noto Sans JP', sans-serif;
-  background: var(--paper);
   color: var(--ink);
-  min-height: 100vh;
-  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
 }
 
-/* ===== HEADER ===== */
+/* ── HEADER ── */
 header {
   background: var(--navy);
   color: white;
-  padding: 14px 20px;
+  padding: 10px 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  gap: 10px;
+  flex-shrink: 0;
 }
-header h1 {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 18px;
-  letter-spacing: 0.05em;
-  flex: 1;
-}
-header span.sub {
-  font-size: 11px;
-  color: rgba(255,255,255,0.55);
-  letter-spacing: 0.1em;
-}
-.header-badge {
+header h1 { font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing: .06em; flex: 1; }
+.hbadge {
   background: var(--gold);
   color: var(--navy);
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
   padding: 3px 8px;
   border-radius: 20px;
-  letter-spacing: 0.08em;
+  letter-spacing: .06em;
 }
-
-/* ===== TABS ===== */
-.tabs {
-  display: flex;
-  background: var(--paper-dark);
-  border-bottom: 2px solid #DDD8D0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.tabs::-webkit-scrollbar { display: none; }
-.tab-btn {
-  flex: 1;
-  min-width: 80px;
-  padding: 12px 8px;
-  background: none;
-  border: none;
-  font-family: 'Noto Sans JP', sans-serif;
+.back-btn {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: rgba(255,255,255,0.8);
+  border-radius: 6px;
+  padding: 5px 10px;
   font-size: 12px;
-  color: var(--ink-light);
   cursor: pointer;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -2px;
-  transition: all 0.2s;
-  white-space: nowrap;
+  font-family: 'Noto Sans JP', sans-serif;
 }
-.tab-btn.active {
-  color: var(--navy);
-  border-bottom-color: var(--navy);
-  font-weight: 500;
+
+/* ── SCROLL BODY ── */
+.scroll-body {
+  flex: 1;
+  overflow-y: auto;
   background: var(--paper);
+  -webkit-overflow-scrolling: touch;
 }
 
-/* ===== MAIN PANELS ===== */
-.panel { display: none; padding: 16px; }
-.panel.active { display: block; }
-
-/* ===== SECTION CARD ===== */
-.card {
-  background: white;
-  border-radius: var(--radius);
-  padding: 16px;
-  margin-bottom: 14px;
-  box-shadow: var(--shadow);
-  border: 1px solid #E8E2D8;
-}
-.card-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 13px;
-  color: var(--ink-light);
-  letter-spacing: 0.08em;
-  margin-bottom: 12px;
+/* ── SECTIONS ── */
+.section { padding: 14px 16px; border-bottom: 1px solid var(--paper2); }
+.sec-label {
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--ink2);
+  margin-bottom: 8px;
   display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.card-title .icon { font-size: 15px; }
-
-/* ===== PALETTE SWATCHES ===== */
-.palette-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
-  margin-bottom: 4px;
-}
-.swatch {
-  display: flex;
-  flex-direction: column;
   align-items: center;
   gap: 5px;
-  cursor: pointer;
-  padding: 6px 2px;
-  border-radius: 10px;
-  transition: background 0.15s;
-}
-.swatch:active { background: var(--paper-dark); }
-.swatch.selected { background: var(--paper-dark); }
-.swatch-dot {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  transition: border-color 0.2s, transform 0.15s;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-}
-.swatch.selected .swatch-dot {
-  border-color: var(--navy);
-  transform: scale(1.12);
-}
-.swatch-dot::after {
-  content: '✓';
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-size: 16px;
-  opacity: 0;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-}
-.swatch.selected .swatch-dot::after { opacity: 1; }
-.swatch-label {
-  font-size: 10px;
-  color: var(--ink-light);
-  text-align: center;
-  line-height: 1.2;
 }
 
-/* Style swatches */
-.style-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
-}
-.style-chip {
-  border: 2px solid #E0DAD0;
-  border-radius: 10px;
-  padding: 10px 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: var(--paper);
-}
-.style-chip.selected {
-  border-color: var(--navy);
-  background: white;
-}
-.style-chip .chip-icon { font-size: 20px; }
-.style-chip .chip-text { font-size: 12px; line-height: 1.3; }
-.style-chip .chip-text strong { display: block; font-size: 13px; }
-
-/* ===== PROMPT AREA ===== */
-.prompt-area {
+/* ── TEXTAREA ── */
+.prompt-ta {
   width: 100%;
-  min-height: 120px;
-  border: 2px solid #E0DAD0;
-  border-radius: var(--radius);
-  padding: 12px;
+  min-height: 100px;
+  border: 1.5px solid var(--paper2);
+  border-radius: var(--r);
+  padding: 11px 12px;
   font-family: 'Noto Sans JP', sans-serif;
   font-size: 14px;
+  line-height: 1.75;
   color: var(--ink);
-  background: var(--paper);
-  resize: vertical;
+  background: white;
+  resize: none;
   outline: none;
-  line-height: 1.7;
-  transition: border-color 0.2s;
+  transition: border-color .15s;
 }
-.prompt-area:focus { border-color: var(--navy); background: white; }
-.prompt-area::placeholder { color: #B0A898; }
+.prompt-ta:focus { border-color: var(--navy); }
+.prompt-ta::placeholder { color: #B8B0A4; font-size: 13px; }
 
-/* Quick tags */
-.quick-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
+/* Quick tag pills */
+.qtags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 .qtag {
-  background: var(--paper-dark);
-  border: 1px solid #DDD8D0;
+  background: var(--paper2);
+  border: 1px solid #D8D0C4;
   border-radius: 20px;
   padding: 4px 10px;
   font-size: 11px;
+  color: var(--ink2);
   cursor: pointer;
-  color: var(--ink-light);
-  transition: all 0.15s;
   white-space: nowrap;
+  transition: all .15s;
 }
-.qtag:active, .qtag:hover { background: var(--navy); color: white; border-color: var(--navy); }
+.qtag:active { background: var(--navy); color: white; border-color: var(--navy); }
 
-/* ===== OUTPUT FORMAT ===== */
-.format-grid {
+/* ── STYLE CHIPS ── */
+.style-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
 }
-.format-card {
-  border: 2px solid #E0DAD0;
-  border-radius: 10px;
-  padding: 12px 10px;
-  cursor: pointer;
-  transition: all 0.2s;
-  background: var(--paper);
+.schip {
+  border: 1.5px solid var(--paper2);
+  border-radius: 8px;
+  padding: 8px 4px;
   text-align: center;
-}
-.format-card.selected {
-  border-color: var(--gold);
+  cursor: pointer;
   background: white;
-  box-shadow: 0 0 0 1px var(--gold);
+  transition: all .15s;
 }
-.format-icon { font-size: 24px; margin-bottom: 4px; }
-.format-name { font-size: 12px; font-weight: 500; }
-.format-desc { font-size: 10px; color: var(--ink-light); margin-top: 2px; line-height: 1.3; }
+.schip.on { border-color: var(--navy); background: var(--paper); }
+.schip .si { font-size: 18px; display: block; margin-bottom: 3px; }
+.schip .st { font-size: 10px; color: var(--ink2); line-height: 1.2; }
+.schip.on .st { color: var(--navy); font-weight: 500; }
 
-/* ===== GENERATE BUTTON ===== */
-.generate-btn {
+/* ── TONE SWATCHES ── */
+.tone-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.tswatch {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2.5px solid transparent;
+  transition: border-color .15s, transform .1s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.22);
+  flex-shrink: 0;
+}
+.tswatch.on { border-color: var(--navy); transform: scale(1.18); }
+
+/* ── RUN BUTTON ── */
+.run-btn {
   width: 100%;
-  padding: 16px;
+  padding: 14px;
   background: var(--navy);
   color: white;
   border: none;
-  border-radius: var(--radius);
+  border-radius: var(--r);
   font-family: 'Noto Serif JP', serif;
-  font-size: 16px;
-  letter-spacing: 0.1em;
+  font-size: 15px;
+  letter-spacing: .08em;
   cursor: pointer;
-  margin-top: 8px;
-  transition: all 0.2s;
-  position: relative;
-  overflow: hidden;
-}
-.generate-btn:active { transform: scale(0.98); }
-.generate-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.generate-btn .btn-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; opacity: 0.7; display: block; margin-top: 2px; }
-
-/* ===== CANVAS PREVIEW ===== */
-.canvas-wrap {
-  background: white;
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-  border: 1px solid #E8E2D8;
-  margin-bottom: 14px;
-}
-.canvas-header {
-  background: var(--paper-dark);
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border-bottom: 1px solid #DDD8D0;
-}
-.canvas-header span { font-size: 12px; color: var(--ink-light); }
-
-#preview-canvas {
-  width: 100%;
-  display: block;
-  background: white;
-  min-height: 300px;
-}
-
-/* AI Response area */
-.ai-response {
-  padding: 16px;
-  min-height: 200px;
-}
-.ai-response.empty {
+  transition: opacity .2s;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  color: var(--ink-light);
-  text-align: center;
-  gap: 8px;
+  gap: 3px;
 }
-.ai-response.empty .empty-icon { font-size: 48px; opacity: 0.4; }
-.ai-response.empty p { font-size: 13px; line-height: 1.7; }
+.run-btn:disabled { opacity: .4; cursor: not-allowed; }
+.run-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; opacity: .65; }
 
-/* Loading state */
-.loading-indicator {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 16px;
-  color: var(--ink-light);
-}
-.dots { display: flex; gap: 4px; }
-.dot {
-  width: 8px; height: 8px;
-  background: var(--navy);
-  border-radius: 50%;
-  animation: bounce 1.2s ease-in-out infinite;
-}
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes bounce {
-  0%, 80%, 100% { transform: translateY(0); opacity: 0.4; }
-  40% { transform: translateY(-6px); opacity: 1; }
-}
+/* ── RESULT AREA ── */
+.result-area { display: none; }
+.result-area.show { display: block; }
 
-/* Generated image area */
-.generated-image {
-  width: 100%;
-  border-radius: 0;
-  display: block;
-}
-.result-prompt {
-  padding: 12px 16px;
-  background: var(--paper);
-  border-top: 1px solid #E8E2D8;
-  font-size: 12px;
-  color: var(--ink-light);
-  line-height: 1.6;
-}
-
-/* Action buttons */
-.action-row {
-  display: flex;
-  gap: 8px;
-  padding: 12px 16px;
-  border-top: 1px solid #E8E2D8;
-  background: var(--paper-dark);
-}
-.action-btn {
-  flex: 1;
-  padding: 10px 8px;
-  border-radius: 8px;
-  border: 1.5px solid #DDD8D0;
+/* Canvas card */
+.canvas-card {
   background: white;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 12px;
-  cursor: pointer;
-  color: var(--ink);
-  transition: all 0.15s;
-  text-align: center;
-}
-.action-btn:active { background: var(--paper-dark); }
-.action-btn.primary {
-  background: var(--navy);
-  color: white;
-  border-color: var(--navy);
-}
-
-/* ===== GALLERY ===== */
-.gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-}
-.gallery-item {
-  border-radius: var(--radius);
+  border-radius: var(--r);
   overflow: hidden;
-  background: white;
-  box-shadow: var(--shadow);
-  border: 1px solid #E8E2D8;
-  cursor: pointer;
-}
-.gallery-item img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  display: block;
-}
-.gallery-item .gallery-meta {
-  padding: 8px 10px;
-}
-.gallery-meta .g-style { font-size: 10px; color: var(--ink-light); }
-.gallery-meta .g-date { font-size: 10px; color: var(--ink-light); float: right; }
-.gallery-meta .g-desc { font-size: 12px; margin-top: 2px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-
-.gallery-empty {
-  grid-column: 1/-1;
-  text-align: center;
-  padding: 48px 16px;
-  color: var(--ink-light);
-}
-.gallery-empty .ge-icon { font-size: 48px; opacity: 0.35; margin-bottom: 8px; }
-.gallery-empty p { font-size: 13px; }
-
-/* ===== EXPORT SHEET ===== */
-.export-sheet {
-  position: fixed;
-  inset: 0;
-  background: rgba(26,39,68,0.6);
-  z-index: 200;
-  display: none;
-  align-items: flex-end;
-}
-.export-sheet.open { display: flex; }
-.sheet-inner {
-  background: var(--paper);
-  border-radius: 20px 20px 0 0;
-  width: 100%;
-  padding: 20px;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-.sheet-handle {
-  width: 40px;
-  height: 4px;
-  background: #CCC8C0;
-  border-radius: 2px;
-  margin: 0 auto 16px;
-}
-.sheet-title {
-  font-family: 'Noto Serif JP', serif;
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-.export-options {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.export-opt {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  background: white;
-  border-radius: 12px;
-  border: 1.5px solid #E0DAD0;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.export-opt:active { background: var(--paper-dark); }
-.export-opt .eo-icon { font-size: 24px; }
-.export-opt .eo-text strong { display: block; font-size: 14px; }
-.export-opt .eo-text span { font-size: 11px; color: var(--ink-light); }
-
-/* Settings panel */
-.settings-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 0;
-  border-bottom: 1px solid #EDE8E1;
-}
-.settings-row:last-child { border-bottom: none; }
-.settings-label { font-size: 13px; }
-.settings-sub { font-size: 11px; color: var(--ink-light); }
-.toggle {
-  width: 44px;
-  height: 26px;
-  background: #CCC8C0;
-  border-radius: 13px;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.2s;
-  flex-shrink: 0;
-}
-.toggle.on { background: var(--navy); }
-.toggle::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: white;
-  border-radius: 50%;
-  top: 3px;
-  left: 3px;
-  transition: left 0.2s;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-}
-.toggle.on::after { left: 21px; }
-
-.api-input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1.5px solid #E0DAD0;
-  border-radius: 8px;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 13px;
-  background: white;
-  color: var(--ink);
-  outline: none;
-  margin-top: 6px;
-}
-.api-input:focus { border-color: var(--navy); }
-
-/* Diary output preview */
-.diary-preview {
-  background: white;
-  border-radius: var(--radius);
-  overflow: hidden;
-  border: 1px solid #E8E2D8;
-  box-shadow: var(--shadow);
-}
-.diary-preview.a5 { max-width: 360px; margin: 0 auto; }
-.diary-header-bar {
-  background: var(--navy);
-  color: white;
-  padding: 10px 14px;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 13px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.diary-content { padding: 14px; }
-.diary-image-slot {
-  width: 100%;
-  aspect-ratio: 16/9;
-  background: var(--paper-dark);
-  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  border: 1px solid var(--paper2);
   margin-bottom: 12px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink-light);
-  font-size: 12px;
 }
-.diary-image-slot img { width: 100%; height: 100%; object-fit: cover; }
-.diary-text-area {
-  font-size: 12px;
-  line-height: 1.9;
-  color: var(--ink);
-  background: repeating-linear-gradient(transparent, transparent 27px, #E8E2D8 27px, #E8E2D8 28px);
-  min-height: 120px;
-  padding: 4px 0;
+.canvas-bar {
+  background: var(--paper2);
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.canvas-bar span { font-size: 11px; color: var(--ink2); }
+#preview-canvas { width: 100%; display: block; }
+
+/* AI analysis cards */
+.ai-card {
+  background: white;
+  border: 1px solid var(--paper2);
+  border-radius: var(--r);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.ai-card-label {
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--ink2);
+  margin-bottom: 6px;
+}
+.ai-card p { font-size: 13px; line-height: 1.75; color: var(--ink); }
+.ai-card ul { font-size: 13px; line-height: 1.9; padding-left: 16px; color: var(--ink); }
+
+/* Advice box */
+.advice-box {
+  background: #FFF8EC;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 10px 13px;
+  margin-bottom: 10px;
+}
+.advice-box .alabel { font-size: 10px; color: var(--gold); font-weight: 600; margin-bottom: 4px; }
+.advice-box p { font-size: 13px; line-height: 1.75; color: var(--ink); }
+
+/* Color swatches result */
+.color-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.cr-swatch {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  border: 2px solid white;
+  cursor: pointer;
+  transition: transform .1s;
+}
+.cr-swatch:active { transform: scale(1.15); }
+
+/* Send to draw button */
+.send-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--sage);
+  color: white;
+  border: none;
+  border-radius: var(--r);
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px;
+  letter-spacing: .08em;
+  cursor: pointer;
+  margin-bottom: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.send-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; opacity: .75; }
+
+/* Loading */
+.loading {
+  display: none;
+  padding: 20px 16px;
+  align-items: center;
+  gap: 10px;
+  color: var(--ink2);
+  font-size: 13px;
+}
+.loading.show { display: flex; }
+.dots span {
+  display: inline-block;
+  width: 7px; height: 7px;
+  background: var(--navy);
+  border-radius: 50%;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+.dots span:nth-child(2) { animation-delay: .2s; }
+.dots span:nth-child(3) { animation-delay: .4s; }
+@keyframes pulse {
+  0%,80%,100% { opacity: .25; transform: scale(.85); }
+  40% { opacity: 1; transform: scale(1); }
 }
 
-/* Snackbar */
-.snackbar {
+/* Snack */
+.snack {
   position: fixed;
   bottom: 24px;
   left: 50%;
-  transform: translateX(-50%) translateY(80px);
-  background: var(--ink);
+  transform: translateX(-50%) translateY(40px);
+  background: rgba(28,43,74,.95);
   color: white;
-  padding: 10px 20px;
-  border-radius: 24px;
+  padding: 9px 18px;
+  border-radius: 20px;
   font-size: 13px;
-  z-index: 300;
-  transition: transform 0.3s;
+  z-index: 200;
+  opacity: 0;
+  transition: transform .25s, opacity .25s;
   white-space: nowrap;
 }
-.snackbar.show { transform: translateX(-50%) translateY(0); }
+.snack.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-/* Detail modal */
-.detail-modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(26,39,68,0.85);
-  z-index: 250;
-  display: none;
-  flex-direction: column;
-}
-.detail-modal.open { display: flex; }
-.detail-top {
-  padding: 16px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.detail-top span { color: white; font-size: 14px; }
-.close-btn {
-  background: rgba(255,255,255,0.15);
-  border: none;
-  color: white;
-  font-size: 20px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.detail-image { width: 100%; flex: 1; object-fit: contain; }
-.detail-info {
+/* History list */
+.history-list { display: flex; flex-direction: column; gap: 8px; }
+.hist-item {
   background: white;
-  padding: 16px;
-  max-height: 40vh;
-  overflow-y: auto;
+  border: 1px solid var(--paper2);
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
 }
-.detail-info h3 { font-family: 'Noto Serif JP', serif; font-size: 15px; margin-bottom: 8px; }
-.detail-info p { font-size: 13px; color: var(--ink-light); line-height: 1.7; }
-.detail-actions { display: flex; gap: 8px; margin-top: 12px; }
+.hist-thumb {
+  width: 48px; height: 36px;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--paper2);
+}
+.hist-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.hist-text { flex: 1; min-width: 0; }
+.hist-text .ht { font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--ink); }
+.hist-text .hd { font-size: 10px; color: var(--ink2); margin-top: 2px; }
 </style>
 </head>
 <body>
 
 <header>
-  <div>
-    <h1>🎨 Illust Studio</h1>
-    <span class="sub">頭の中を、絵に</span>
-  </div>
-  <span class="header-badge">AI作画</span>
+  <button class="back-btn" onclick="goHome()">← ホーム</button>
+  <h1>💡 コンセプト</h1>
+  <span class="hbadge">AI提案</span>
 </header>
 
-<div class="tabs">
-  <button class="tab-btn active" onclick="switchTab('create')">✏️ 作成</button>
-  <button class="tab-btn" onclick="switchTab('preview')">🖼 プレビュー</button>
-  <button class="tab-btn" onclick="switchTab('gallery')">📚 ギャラリー</button>
-  <button class="tab-btn" onclick="switchTab('output')">📄 出力</button>
-  <button class="tab-btn" onclick="switchTab('settings')">⚙️ 設定</button>
-</div>
+<div class="scroll-body" id="scroll-body">
 
-<!-- ======= CREATE PANEL ======= -->
-<div id="tab-create" class="panel active">
-
-  <div class="card">
-    <div class="card-title"><span class="icon">💭</span>どんな絵を描きたい？</div>
-    <textarea class="prompt-area" id="prompt-input"
+  <!-- ① プロンプト入力 -->
+  <div class="section">
+    <div class="sec-label">✏️ 描きたいイメージを言葉にする</div>
+    <textarea class="prompt-ta" id="prompt"
       placeholder="例：夕暮れの海辺に立つ少女。後ろ姿で、遠くに灯台が見える。風で髪がなびいている。"></textarea>
-    <div class="quick-tags">
-      <span class="qtag" onclick="addTag('夕暮れの空')">🌇 夕暮れの空</span>
-      <span class="qtag" onclick="addTag('森の中の小屋')">🌲 森の小屋</span>
-      <span class="qtag" onclick="addTag('カフェの窓際')">☕ カフェ窓際</span>
-      <span class="qtag" onclick="addTag('古い路地裏')">🏮 路地裏</span>
-      <span class="qtag" onclick="addTag('花畑と少女')">🌸 花畑</span>
-      <span class="qtag" onclick="addTag('雨の街並み')">🌧 雨の街</span>
-      <span class="qtag" onclick="addTag('山頂からの眺め')">⛰ 山頂</span>
-      <span class="qtag" onclick="addTag('夜の港')">🌙 夜の港</span>
+    <div class="qtags">
+      <span class="qtag" onclick="tag('夕暮れの空と海')">🌇 夕暮れの海</span>
+      <span class="qtag" onclick="tag('森の中の小屋')">🌲 森の小屋</span>
+      <span class="qtag" onclick="tag('古い路地裏')">🏮 路地裏</span>
+      <span class="qtag" onclick="tag('雨の日の窓際')">🌧 雨の窓</span>
+      <span class="qtag" onclick="tag('花畑に立つ人')">🌸 花畑</span>
+      <span class="qtag" onclick="tag('夜の港と船')">🌙 夜の港</span>
+      <span class="qtag" onclick="tag('山頂からの眺め')">⛰ 山頂</span>
+      <span class="qtag" onclick="tag('カフェの窓際の午後')">☕ カフェ</span>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title"><span class="icon">🎨</span>画材・スタイル</div>
-    <div class="style-grid" id="style-grid">
-      <div class="style-chip selected" data-style="pencil" onclick="selectStyle(this)">
-        <span class="chip-icon">✏️</span>
-        <div class="chip-text"><strong>鉛筆デッサン</strong>繊細な陰影・モノクロ</div>
+  <!-- ② スタイル -->
+  <div class="section">
+    <div class="sec-label">🖌 画材スタイル</div>
+    <div class="style-grid">
+      <div class="schip on" data-s="pencil" onclick="pickStyle(this)">
+        <span class="si">✏️</span><span class="st">鉛筆<br>デッサン</span>
       </div>
-      <div class="style-chip" data-style="watercolor" onclick="selectStyle(this)">
-        <span class="chip-icon">💧</span>
-        <div class="chip-text"><strong>水彩画</strong>透明感・にじみ表現</div>
+      <div class="schip" data-s="watercolor" onclick="pickStyle(this)">
+        <span class="si">💧</span><span class="st">水彩画</span>
       </div>
-      <div class="style-chip" data-style="acrylic" onclick="selectStyle(this)">
-        <span class="chip-icon">🖌</span>
-        <div class="chip-text"><strong>アクリル画</strong>鮮やか・力強い筆致</div>
+      <div class="schip" data-s="acrylic" onclick="pickStyle(this)">
+        <span class="si">🖌</span><span class="st">アクリル</span>
       </div>
-      <div class="style-chip" data-style="oil" onclick="selectStyle(this)">
-        <span class="chip-icon">🎭</span>
-        <div class="chip-text"><strong>油彩</strong>重厚感・古典的質感</div>
+      <div class="schip" data-s="oil" onclick="pickStyle(this)">
+        <span class="si">🎭</span><span class="st">油彩</span>
       </div>
-      <div class="style-chip" data-style="ink" onclick="selectStyle(this)">
-        <span class="chip-icon">🖊</span>
-        <div class="chip-text"><strong>ペン画・墨</strong>線描・和風・漫画風</div>
+      <div class="schip" data-s="ink" onclick="pickStyle(this)">
+        <span class="si">🖊</span><span class="st">ペン・墨</span>
       </div>
-      <div class="style-chip" data-style="pastel" onclick="selectStyle(this)">
-        <span class="chip-icon">🌈</span>
-        <div class="chip-text"><strong>パステル</strong>柔らか・ふんわり</div>
+      <div class="schip" data-s="pastel" onclick="pickStyle(this)">
+        <span class="si">🌈</span><span class="st">パステル</span>
       </div>
-      <div class="style-chip" data-style="digital" onclick="selectStyle(this)">
-        <span class="chip-icon">💻</span>
-        <div class="chip-text"><strong>デジタル</strong>クリーン・アニメ風</div>
+      <div class="schip" data-s="digital" onclick="pickStyle(this)">
+        <span class="si">💻</span><span class="st">デジタル</span>
       </div>
-      <div class="style-chip" data-style="sketch" onclick="selectStyle(this)">
-        <span class="chip-icon">📓</span>
-        <div class="chip-text"><strong>スケッチ</strong>ラフ感・速写</div>
+      <div class="schip" data-s="sketch" onclick="pickStyle(this)">
+        <span class="si">📓</span><span class="st">スケッチ</span>
       </div>
     </div>
   </div>
 
-  <div class="card">
-    <div class="card-title"><span class="icon">🌈</span>カラートーン</div>
-    <div class="palette-grid" id="palette-grid">
-      <div class="swatch selected" data-tone="warm" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: radial-gradient(circle at 35% 35%, #F4A460, #C0392B)"></div>
-        <span class="swatch-label">ウォーム</span>
-      </div>
-      <div class="swatch" data-tone="cool" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: radial-gradient(circle at 35% 35%, #87CEEB, #2980B9)"></div>
-        <span class="swatch-label">クール</span>
-      </div>
-      <div class="swatch" data-tone="mono" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: radial-gradient(circle at 35% 35%, #E0E0E0, #555)"></div>
-        <span class="swatch-label">モノクロ</span>
-      </div>
-      <div class="swatch" data-tone="vivid" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: conic-gradient(#FF6B6B, #FFD93D, #6BCB77, #4D96FF, #FF6B6B)"></div>
-        <span class="swatch-label">ビビッド</span>
-      </div>
-      <div class="swatch" data-tone="earth" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: radial-gradient(circle at 35% 35%, #D4A843, #8B6914)"></div>
-        <span class="swatch-label">アース</span>
-      </div>
-      <div class="swatch" data-tone="pastel" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: radial-gradient(circle at 35% 35%, #FFB3BA, #B5EAD7)"></div>
-        <span class="swatch-label">パステル</span>
-      </div>
-      <div class="swatch" data-tone="night" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: radial-gradient(circle at 35% 35%, #6C63FF, #1A2744)"></div>
-        <span class="swatch-label">ナイト</span>
-      </div>
-      <div class="swatch" data-tone="vintage" onclick="selectTone(this)">
-        <div class="swatch-dot" style="background: radial-gradient(circle at 35% 35%, #C9B18F, #7B5E3B)"></div>
-        <span class="swatch-label">ヴィンテージ</span>
-      </div>
-    </div>
+  <!-- ③ カラートーン -->
+  <div class="section">
+    <div class="sec-label">🎨 カラートーン</div>
+    <div class="tone-row" id="tone-row"></div>
   </div>
 
-  <div class="card">
-    <div class="card-title"><span class="icon">📐</span>出力フォーマット</div>
-    <div class="format-grid" id="format-grid">
-      <div class="format-card selected" data-format="diary" onclick="selectFormat(this)">
-        <div class="format-icon">📔</div>
-        <div class="format-name">日記用</div>
-        <div class="format-desc">A5横・日付入り<br>テキスト欄付き</div>
-      </div>
-      <div class="format-card" data-format="instagram" onclick="selectFormat(this)">
-        <div class="format-icon">📷</div>
-        <div class="format-name">インスタ用</div>
-        <div class="format-desc">正方形1:1<br>SNSシェア向け</div>
-      </div>
-      <div class="format-card" data-format="print" onclick="selectFormat(this)">
-        <div class="format-icon">🖨</div>
-        <div class="format-name">印刷用</div>
-        <div class="format-desc">A4縦・高解像度<br>フチなし対応</div>
-      </div>
-      <div class="format-card" data-format="postcard" onclick="selectFormat(this)">
-        <div class="format-icon">📮</div>
-        <div class="format-name">はがきサイズ</div>
-        <div class="format-desc">100×148mm<br>メッセージ欄付き</div>
-      </div>
-    </div>
-  </div>
-
-  <button class="generate-btn" id="generate-btn" onclick="generateIllust()">
-    ✨ イラストを生成する
-    <span class="btn-sub">AIが構図・スタイルを解釈して描きます</span>
-  </button>
-
-</div>
-
-<!-- ======= PREVIEW PANEL ======= -->
-<div id="tab-preview" class="panel">
-  <div class="canvas-wrap">
-    <div class="canvas-header">
-      <span id="preview-label">生成待ち</span>
-      <span id="preview-style-badge">—</span>
-    </div>
-    <div id="ai-response-area" class="ai-response empty">
-      <div class="empty-icon">🎨</div>
-      <p>「作成」タブでイラストの設定をして<br>「生成する」ボタンを押してください</p>
-    </div>
-    <div id="preview-actions" class="action-row" style="display:none">
-      <button class="action-btn" onclick="regenerate()">🔄 再生成</button>
-      <button class="action-btn" onclick="openExportSheet()">💾 保存</button>
-      <button class="action-btn primary" onclick="addToGallery()">📚 ギャラリーへ</button>
-    </div>
-  </div>
-
-  <div id="prompt-display-card" class="card" style="display:none">
-    <div class="card-title"><span class="icon">💭</span>生成に使ったプロンプト</div>
-    <p id="prompt-display" style="font-size:13px; line-height:1.7; color: var(--ink-light);"></p>
-    <div style="margin-top:8px; display:flex; gap:6px; flex-wrap:wrap;" id="used-tags"></div>
-  </div>
-</div>
-
-<!-- ======= GALLERY PANEL ======= -->
-<div id="tab-gallery" class="panel">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-    <span style="font-family:'Noto Serif JP',serif; font-size:15px;">保存した作品</span>
-    <span id="gallery-count" style="font-size:12px; color:var(--ink-light);">0 点</span>
-  </div>
-  <div class="gallery-grid" id="gallery-grid">
-    <div class="gallery-empty">
-      <div class="ge-icon">🖼</div>
-      <p>まだ作品がありません<br>「作成」タブで生成してみましょう</p>
-    </div>
-  </div>
-</div>
-
-<!-- ======= OUTPUT PANEL ======= -->
-<div id="tab-output" class="panel">
-  <div class="card">
-    <div class="card-title"><span class="icon">📔</span>日記フォーマットプレビュー</div>
-    <div class="diary-preview a5">
-      <div class="diary-header-bar">
-        <span id="diary-date-label">2025年6月18日</span>
-        <span style="font-size:11px; opacity:0.7;">My Sketch Book</span>
-      </div>
-      <div class="diary-content">
-        <div class="diary-image-slot" id="diary-image-slot">
-          <span>イラストがここに入ります</span>
-        </div>
-        <div class="diary-text-area">
-          &nbsp;
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="icon">📤</span>エクスポート</div>
-    <button class="action-btn" style="width:100%; padding:14px; margin-bottom:8px;" onclick="openExportSheet()">
-      💾 フォーマットを選んで保存・共有
-    </button>
-    <p style="font-size:12px; color:var(--ink-light); line-height:1.6;">
-      日記アプリ・Notionへの貼り付け、印刷、SNS投稿など目的に合わせてエクスポートできます。
-    </p>
-  </div>
-</div>
-
-<!-- ======= SETTINGS PANEL ======= -->
-<div id="tab-settings" class="panel">
-  <div class="card">
-    <div class="card-title"><span class="icon">🔑</span>APIキー設定</div>
-    <div class="settings-row">
-      <div>
-        <div class="settings-label">Claude APIキー</div>
-        <div class="settings-sub">イラスト説明・構図提案に使用</div>
-      </div>
-    </div>
-    <input type="password" class="api-input" id="claude-key-input" placeholder="sk-ant-..." oninput="saveSettings()">
-
-    <div class="settings-row" style="margin-top:12px;">
-      <div>
-        <div class="settings-label">Stable Diffusion / 画像生成API</div>
-        <div class="settings-sub">実際の画像生成に使用（任意）</div>
-      </div>
-    </div>
-    <input type="password" class="api-input" id="sd-key-input" placeholder="APIキーを入力..." oninput="saveSettings()">
-    <p style="font-size:11px; color:var(--ink-light); margin-top:8px; line-height:1.6;">
-      ※ キーは端末内(localStorage)のみ保存。外部送信しません。
-    </p>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="icon">⚙️</span>生成設定</div>
-    <div class="settings-row">
-      <div>
-        <div class="settings-label">高解像度モード</div>
-        <div class="settings-sub">処理時間が増えます</div>
-      </div>
-      <div class="toggle" id="toggle-hires" onclick="toggleSetting(this)"></div>
-    </div>
-    <div class="settings-row">
-      <div>
-        <div class="settings-label">自動ギャラリー保存</div>
-        <div class="settings-sub">生成後に自動でギャラリーへ追加</div>
-      </div>
-      <div class="toggle on" id="toggle-autosave" onclick="toggleSetting(this)"></div>
-    </div>
-    <div class="settings-row">
-      <div>
-        <div class="settings-label">日本語プロンプト自動翻訳</div>
-        <div class="settings-sub">AIが英語に変換して高精度生成</div>
-      </div>
-      <div class="toggle on" id="toggle-translate" onclick="toggleSetting(this)"></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-title"><span class="icon">📦</span>データ管理</div>
-    <button class="action-btn" style="width:100%; padding:12px; margin-bottom:8px;" onclick="exportGalleryJSON()">
-      📤 ギャラリーデータをエクスポート (JSON)
-    </button>
-    <button class="action-btn" style="width:100%; padding:12px; margin-bottom:8px;" onclick="importGalleryJSON()">
-      📥 ギャラリーデータをインポート
-    </button>
-    <button class="action-btn" style="width:100%; padding:12px; color:#C0392B; border-color:#C0392B;" onclick="clearGallery()">
-      🗑 ギャラリーをクリア
+  <!-- ④ 実行 -->
+  <div class="section">
+    <button class="run-btn" id="run-btn" onclick="runConcept()">
+      ✨ AIに構図・配色を提案してもらう
+      <span class="run-sub">あなたのイメージを読み取って分析します</span>
     </button>
   </div>
-</div>
 
-<!-- ======= EXPORT SHEET ======= -->
-<div class="export-sheet" id="export-sheet" onclick="closeExportSheet(event)">
-  <div class="sheet-inner">
-    <div class="sheet-handle"></div>
-    <div class="sheet-title">💾 保存・共有方法を選ぶ</div>
-    <div class="export-options">
-      <div class="export-opt" onclick="exportAs('png')">
-        <span class="eo-icon">🖼</span>
-        <div class="eo-text">
-          <strong>PNG画像として保存</strong>
-          <span>カメラロールまたはダウンロード</span>
+  <!-- Loading -->
+  <div class="loading" id="loading">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <span id="loading-text">AIが構図を分析中...</span>
+  </div>
+
+  <!-- ⑤ 結果 -->
+  <div class="result-area" id="result-area">
+
+    <div class="section">
+      <div class="sec-label">🖼 参考ビジュアル（AI構図イメージ）</div>
+      <div class="canvas-card">
+        <div class="canvas-bar">
+          <span id="canvas-label">—</span>
+          <span id="canvas-tone-label">—</span>
         </div>
-      </div>
-      <div class="export-opt" onclick="exportAs('diary-img')">
-        <span class="eo-icon">📔</span>
-        <div class="eo-text">
-          <strong>日記フォーマットで保存</strong>
-          <span>日付・テキスト欄付き画像</span>
-        </div>
-      </div>
-      <div class="export-opt" onclick="exportAs('postcard')">
-        <span class="eo-icon">📮</span>
-        <div class="eo-text">
-          <strong>はがき形式で保存</strong>
-          <span>100×148mm相当</span>
-        </div>
-      </div>
-      <div class="export-opt" onclick="exportAs('share')">
-        <span class="eo-icon">📤</span>
-        <div class="eo-text">
-          <strong>共有メニューを開く</strong>
-          <span>LINE、メモ、Notion etc.</span>
-        </div>
-      </div>
-      <div class="export-opt" onclick="exportAs('clipboard')">
-        <span class="eo-icon">📋</span>
-        <div class="eo-text">
-          <strong>クリップボードにコピー</strong>
-          <span>どのアプリにも貼り付け可能</span>
-        </div>
+        <canvas id="preview-canvas" width="800" height="500"></canvas>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- ======= DETAIL MODAL ======= -->
-<div class="detail-modal" id="detail-modal">
-  <div class="detail-top">
-    <span id="detail-title">作品詳細</span>
-    <button class="close-btn" onclick="closeDetail()">✕</button>
-  </div>
-  <img id="detail-image" class="detail-image" src="" alt="">
-  <div class="detail-info">
-    <h3 id="detail-style"></h3>
-    <p id="detail-desc"></p>
-    <div class="detail-actions">
-      <button class="action-btn" style="flex:1" onclick="deleteGalleryItem()">🗑 削除</button>
-      <button class="action-btn primary" style="flex:2" onclick="loadToCreate()">✏️ 設定を読み込んで再作成</button>
+    <div class="section">
+      <div class="sec-label">📐 構図</div>
+      <div class="ai-card"><p id="r-composition"></p></div>
+
+      <div class="sec-label" style="margin-top:10px;">🌤 雰囲気・光</div>
+      <div class="ai-card"><p id="r-atmosphere"></p></div>
+
+      <div class="sec-label" style="margin-top:10px;">✏️ 描くポイント</div>
+      <div class="ai-card"><ul id="r-details"></ul></div>
+
+      <div class="sec-label" style="margin-top:10px;">🎨 おすすめの色</div>
+      <div class="ai-card">
+        <p id="r-palette-text"></p>
+        <div class="color-row" id="r-colors"></div>
+      </div>
+
+      <div class="advice-box" id="r-advice-box" style="margin-top:10px;">
+        <div class="alabel">💡 アドバイス</div>
+        <p id="r-advice"></p>
+      </div>
     </div>
+
+    <!-- drawへ送る -->
+    <div class="section">
+      <button class="send-btn" id="send-btn" onclick="sendToDraw()">
+        🖊 この参考をdrawに送る
+        <span class="send-sub">drawアプリで下書きとして使えます</span>
+      </button>
+      <button class="run-btn" style="background:var(--ink2);" onclick="scrollToTop()">
+        🔄 別の絵を考える
+      </button>
+    </div>
+
   </div>
+
+  <!-- ⑥ 履歴 -->
+  <div class="section" id="hist-section" style="display:none;">
+    <div class="sec-label">🕐 最近の提案</div>
+    <div class="history-list" id="hist-list"></div>
+  </div>
+
+  <div style="height: 32px;"></div>
 </div>
 
-<!-- ======= SNACKBAR ======= -->
-<div class="snackbar" id="snackbar"></div>
+<div class="snack" id="snack"></div>
 
 <script>
-// ====== STATE ======
-const STATE = {
+// ── STATE ──
+const C = {
   style: 'pencil',
   tone: 'warm',
-  format: 'diary',
-  currentImage: null,
-  currentPrompt: '',
-  currentEnPrompt: '',
-  gallery: [],
-  selectedGalleryIndex: -1,
-  settings: { hires: false, autosave: true, translate: true }
+  result: null,
+  previewDataURL: null,
+  history: []
 };
 
-// ====== INIT ======
+const STYLES = {
+  pencil:'鉛筆デッサン', watercolor:'水彩画', acrylic:'アクリル画',
+  oil:'油彩', ink:'ペン・墨絵', pastel:'パステル画', digital:'デジタル', sketch:'スケッチ'
+};
+
+const TONES = [
+  { id:'warm',    label:'ウォーム', css:'radial-gradient(circle at 35% 35%,#F4A460,#C0392B)' },
+  { id:'cool',    label:'クール',   css:'radial-gradient(circle at 35% 35%,#87CEEB,#2980B9)' },
+  { id:'mono',    label:'モノクロ', css:'radial-gradient(circle at 35% 35%,#E0E0E0,#555)' },
+  { id:'vivid',   label:'ビビッド', css:'conic-gradient(#FF6B6B,#FFD93D,#6BCB77,#4D96FF,#FF6B6B)' },
+  { id:'earth',   label:'アース',   css:'radial-gradient(circle at 35% 35%,#D4A843,#8B6914)' },
+  { id:'pastel',  label:'パステル', css:'radial-gradient(circle at 35% 35%,#FFB3BA,#B5EAD7)' },
+  { id:'night',   label:'夜',       css:'radial-gradient(circle at 35% 35%,#6C63FF,#1A2744)' },
+  { id:'vintage', label:'ヴィンテージ', css:'radial-gradient(circle at 35% 35%,#C9B18F,#7B5E3B)' },
+];
+
+// ── INIT ──
 window.onload = () => {
-  loadFromStorage();
-  updateDiaryDate();
-  renderGallery();
+  buildTones();
+  loadHistory();
+  loadKeys();
 };
 
-function loadFromStorage() {
-  const saved = localStorage.getItem('illustStudio_gallery');
-  if (saved) STATE.gallery = JSON.parse(saved);
-
-  const keys = localStorage.getItem('illustStudio_settings');
-  if (keys) {
-    const s = JSON.parse(keys);
-    Object.assign(STATE.settings, s);
-  }
-
-  const claudeKey = localStorage.getItem('illustStudio_claude');
-  if (claudeKey) document.getElementById('claude-key-input').value = claudeKey;
-
-  const sdKey = localStorage.getItem('illustStudio_sd');
-  if (sdKey) document.getElementById('sd-key-input').value = sdKey;
-
-  // Apply toggle states
-  if (!STATE.settings.hires) document.getElementById('toggle-hires').classList.remove('on');
-  if (!STATE.settings.autosave) document.getElementById('toggle-autosave').classList.remove('on');
-  if (!STATE.settings.translate) document.getElementById('toggle-translate').classList.remove('on');
+function buildTones() {
+  const row = document.getElementById('tone-row');
+  TONES.forEach(t => {
+    const d = document.createElement('div');
+    d.className = 'tswatch' + (t.id === C.tone ? ' on' : '');
+    d.style.background = t.css;
+    d.title = t.label;
+    d.dataset.id = t.id;
+    d.onclick = () => {
+      document.querySelectorAll('.tswatch').forEach(s => s.classList.remove('on'));
+      d.classList.add('on');
+      C.tone = t.id;
+    };
+    row.appendChild(d);
+  });
 }
 
-function saveSettings() {
-  const claudeKey = document.getElementById('claude-key-input').value;
-  const sdKey = document.getElementById('sd-key-input').value;
-  if (claudeKey) localStorage.setItem('illustStudio_claude', claudeKey);
-  if (sdKey) localStorage.setItem('illustStudio_sd', sdKey);
-  localStorage.setItem('illustStudio_settings', JSON.stringify(STATE.settings));
+function pickStyle(el) {
+  document.querySelectorAll('.schip').forEach(c => c.classList.remove('on'));
+  el.classList.add('on');
+  C.style = el.dataset.s;
 }
 
-function saveGallery() {
-  localStorage.setItem('illustStudio_gallery', JSON.stringify(STATE.gallery));
-}
-
-// ====== TAB SWITCH ======
-function switchTab(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  event.currentTarget.classList.add('active');
-  if (name === 'output') updateOutputPanel();
-}
-
-// ====== SELECTORS ======
-function selectStyle(el) {
-  document.querySelectorAll('.style-chip').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  STATE.style = el.dataset.style;
-}
-
-function selectTone(el) {
-  document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
-  el.classList.add('selected');
-  STATE.tone = el.dataset.tone;
-}
-
-function selectFormat(el) {
-  document.querySelectorAll('.format-card').forEach(f => f.classList.remove('selected'));
-  el.classList.add('selected');
-  STATE.format = el.dataset.format;
-}
-
-function addTag(text) {
-  const ta = document.getElementById('prompt-input');
-  ta.value = ta.value ? ta.value + '、' + text : text;
+function tag(t) {
+  const ta = document.getElementById('prompt');
+  ta.value = ta.value ? ta.value + '、' + t : t;
   ta.focus();
 }
 
-// ====== GENERATE ======
-async function generateIllust() {
-  const prompt = document.getElementById('prompt-input').value.trim();
-  if (!prompt) { showSnack('✏️ まずイラストのイメージを入力してください'); return; }
+// ── RUN ──
+async function runConcept() {
+  const prompt = document.getElementById('prompt').value.trim();
+  if (!prompt) { snack('✏️ まず描きたいイメージを入力してください'); return; }
 
-  const apiKey = localStorage.getItem('illustStudio_claude') || '';
+  const claudeKey = localStorage.getItem('is_claude') || '';
+  const geminiKey = localStorage.getItem('is_gemini') || '';
 
-  STATE.currentPrompt = prompt;
-  switchToPreview();
+  showLoading('AIがイメージを読み取り中...');
+  document.getElementById('run-btn').disabled = true;
+  document.getElementById('result-area').classList.remove('show');
 
-  // Show loading
-  const area = document.getElementById('ai-response-area');
-  area.className = 'ai-response';
-  area.innerHTML = `<div class="loading-indicator"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span>AIがイラストを構成中…</span></div>`;
-  document.getElementById('preview-actions').style.display = 'none';
+  const styleLabel = STYLES[C.style] || C.style;
+  const toneLabel = TONES.find(t => t.id === C.tone)?.label || C.tone;
 
-  const styleLabels = {
-    pencil:'鉛筆デッサン', watercolor:'水彩画', acrylic:'アクリル画',
-    oil:'油彩', ink:'ペン画・墨絵', pastel:'パステル', digital:'デジタルイラスト', sketch:'スケッチ'
-  };
-  const toneLabels = {
-    warm:'ウォームトーン', cool:'クールトーン', mono:'モノクロ', vivid:'ビビッド',
-    earth:'アースカラー', pastel:'パステルカラー', night:'夜・深夜', vintage:'ヴィンテージ'
-  };
+  const sysPrompt = `あなたはイラスト指導者です。ユーザーが描きたい絵のイメージを聞いて、構図・色彩・描くポイントをわかりやすく提案してください。
+JSONのみ返してください（コードブロックなし）:
+{"composition":"構図の説明（視点・主役の位置・奥行き）","atmosphere":"雰囲気と光の説明","details":["ポイント1","ポイント2","ポイント3","ポイント4"],"palette":["色名1 #RRGGBB","色名2 #RRGGBB","色名3 #RRGGBB","色名4 #RRGGBB"],"advice":"初心者へのひとことアドバイス"}`;
 
-  const styleDesc = styleLabels[STATE.style] || STATE.style;
-  const toneDesc = toneLabels[STATE.tone] || STATE.tone;
+  const userMsg = `スタイル:${styleLabel} / トーン:${toneLabel}\n描きたいイメージ:${prompt}`;
 
   try {
-    if (!apiKey) {
-      // Demo mode: AI describes composition
-      await simulateGeneration(prompt, styleDesc, toneDesc);
-      return;
+    let data;
+    if (claudeKey) {
+      data = await callClaude(claudeKey, sysPrompt, userMsg);
+    } else if (geminiKey) {
+      data = await callGemini(geminiKey, sysPrompt, userMsg);
+    } else {
+      data = demoResult(prompt, styleLabel, toneLabel);
     }
+    C.result = data;
+    renderResult(data, styleLabel, toneLabel, prompt);
+    saveHistory(prompt, styleLabel);
+  } catch(e) {
+    snack('⚠️ API エラー: ' + e.message);
+    const data = demoResult(prompt, styleLabel, toneLabel);
+    C.result = data;
+    renderResult(data, styleLabel, toneLabel, prompt);
+  }
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
+  hideLoading();
+  document.getElementById('run-btn').disabled = false;
+}
+
+async function callClaude(key, sys, user) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 800,
+      system: sys,
+      messages: [{ role: 'user', content: user }]
+    })
+  });
+  if (!res.ok) throw new Error('Claude ' + res.status);
+  const d = await res.json();
+  return JSON.parse((d.content?.[0]?.text || '').replace(/```json|```/g,'').trim());
+}
+
+async function callGemini(key, sys, user) {
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
+    {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1000,
-        system: `あなたはプロのイラストレーターのアシスタントです。ユーザーが思い描いているイラストの構図・色彩・画面構成を詳しく分析し、それをイラストの説明として出力してください。
-出力形式（JSON）:
-{
-  "composition": "構図の説明（カメラ位置、視点、主役の配置）",
-  "atmosphere": "雰囲気・光・空気感の説明",
-  "details": "細部の描写ポイント（3〜5項目）",
-  "colorPalette": "使用する主な色（3〜5色、色名で）",
-  "enPrompt": "Stable Diffusion用英語プロンプト（50-80 words）",
-  "advice": "素人の方へのワンポイントアドバイス"
-}
-JSONのみ返してください。`,
-        messages: [{ role: 'user', content: `スタイル: ${styleDesc}\nカラートーン: ${toneDesc}\nイメージ: ${prompt}` }]
+        contents: [{ parts: [{ text: sys + '\n\n' + user }] }],
+        generationConfig: { maxOutputTokens: 800, temperature: 0.5 }
       })
-    });
-
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '';
-    const clean = text.replace(/```json|```/g, '').trim();
-    const parsed = JSON.parse(clean);
-    STATE.currentEnPrompt = parsed.enPrompt || '';
-
-    renderAIResult(parsed, prompt, styleDesc, toneDesc);
-
-  } catch(e) {
-    await simulateGeneration(prompt, styleDesc, toneDesc);
-  }
+    }
+  );
+  if (!res.ok) throw new Error('Gemini ' + res.status);
+  const d = await res.json();
+  return JSON.parse((d.candidates?.[0]?.content?.parts?.[0]?.text || '').replace(/```json|```/g,'').trim());
 }
 
-async function simulateGeneration(prompt, styleDesc, toneDesc) {
-  // Demo: show a styled placeholder canvas
-  await new Promise(r => setTimeout(r, 1500));
-
-  const demoData = {
-    composition: `画面中央に主役を配置。三分割法に基づき、視線の流れを左から右へ誘導するダイナミックな構図。`,
-    atmosphere: `${toneDesc}の色調で、柔らかい光と穏やかな影のコントラストが特徴的。${styleDesc}ならではの質感が全体に統一感を与える。`,
-    details: ['光源の方向を意識した明暗', '背景のボケによる奥行き感', '主役の輪郭線の強調', '細部のテクスチャ'],
-    colorPalette: ['ベースカラー', 'ハイライト', 'シャドウ', 'アクセント'],
-    enPrompt: `${styleDesc} illustration, ${prompt.substring(0,40)}, ${toneDesc} color palette, highly detailed, masterpiece`,
-    advice: `${styleDesc}では、まず大まかな形（シルエット）から始めることが大切です。細部は後から追加しましょう。`
+function demoResult(prompt, styleLabel, toneLabel) {
+  return {
+    composition: `画面を三分割し、主役を左1/3に配置。視線が右奥へ流れる構図。空が上2/3、地面が下1/3を占める。`,
+    atmosphere: `${toneLabel}の柔らかい光。斜め後ろからの光源が輪郭をふんわりと照らす。全体にやわらかい霞感。`,
+    details: ['主役のシルエットから描き始める','水平線・地平線を先に引く','光の方向を決めてから影を足す','細部は最後（葉・波・テクスチャ）'],
+    palette: ['ベース #F4E8D0','シャドウ #6B4F3A','ハイライト #FFF5E0','アクセント #C0392B'],
+    advice: `${styleLabel}は大きな形（シルエット）から始め、細部は最後に描くと全体がまとまります。`
   };
-
-  renderAIResult(demoData, prompt, styleDesc, toneDesc);
 }
 
-function renderAIResult(data, prompt, styleDesc, toneDesc) {
-  STATE.currentEnPrompt = data.enPrompt || '';
+// ── RENDER RESULT ──
+function renderResult(d, styleLabel, toneLabel, prompt) {
+  document.getElementById('canvas-label').textContent = styleLabel;
+  document.getElementById('canvas-tone-label').textContent = toneLabel;
+  document.getElementById('r-composition').textContent = d.composition || '';
+  document.getElementById('r-atmosphere').textContent = d.atmosphere || '';
 
-  const canvas = createIllustCanvas(data, prompt, styleDesc, toneDesc);
-  STATE.currentImage = canvas.toDataURL('image/png');
+  const ul = document.getElementById('r-details');
+  ul.innerHTML = (d.details || []).map(p => `<li>${p}</li>`).join('');
 
-  const area = document.getElementById('ai-response-area');
-  area.className = 'ai-response';
+  // Palette
+  const colorRow = document.getElementById('r-colors');
+  colorRow.innerHTML = '';
+  const paletteNames = [];
+  (d.palette || []).forEach(entry => {
+    const hexMatch = entry.match(/#[0-9A-Fa-f]{6}/);
+    const hex = hexMatch ? hexMatch[0] : '#888';
+    const name = entry.replace(/#[0-9A-Fa-f]{6}/,'').trim();
+    paletteNames.push(name + ' ' + hex);
+    const sw = document.createElement('div');
+    sw.className = 'cr-swatch';
+    sw.style.background = hex;
+    sw.title = name + ' ' + hex;
+    sw.onclick = () => {
+      // bridge: send color to draw via localStorage
+      localStorage.setItem('is_picked_color', hex);
+      snack('🎨 ' + hex + ' をdrawのパレットに追加');
+    };
+    colorRow.appendChild(sw);
+  });
+  document.getElementById('r-palette-text').textContent = paletteNames.join(' / ');
 
-  area.innerHTML = `
-    <img src="${STATE.currentImage}" style="width:100%; display:block;" alt="Generated illustration">
-    <div style="padding:14px; background:var(--paper);">
-      <div style="margin-bottom:10px;">
-        <span style="font-size:11px; color:var(--ink-light); letter-spacing:0.08em;">構図</span>
-        <p style="font-size:13px; line-height:1.6; margin-top:3px;">${data.composition}</p>
-      </div>
-      <div style="margin-bottom:10px;">
-        <span style="font-size:11px; color:var(--ink-light); letter-spacing:0.08em;">雰囲気・光</span>
-        <p style="font-size:13px; line-height:1.6; margin-top:3px;">${data.atmosphere}</p>
-      </div>
-      <div style="margin-bottom:10px;">
-        <span style="font-size:11px; color:var(--ink-light); letter-spacing:0.08em;">描くポイント</span>
-        <ul style="font-size:13px; line-height:1.8; margin-top:3px; padding-left:16px;">
-          ${(data.details||[]).map(d=>`<li>${d}</li>`).join('')}
-        </ul>
-      </div>
-      ${data.advice ? `<div style="background:#FFF8E8; border-left:3px solid var(--gold); padding:10px 12px; border-radius:0 8px 8px 0; margin-top:8px;">
-        <span style="font-size:11px; color:var(--gold); font-weight:500;">💡 アドバイス</span>
-        <p style="font-size:13px; line-height:1.6; margin-top:4px;">${data.advice}</p>
-      </div>` : ''}
-    </div>
-  `;
+  document.getElementById('r-advice').textContent = d.advice || '';
 
-  document.getElementById('preview-label').textContent = styleDesc;
-  document.getElementById('preview-style-badge').textContent = toneDesc;
-  document.getElementById('preview-actions').style.display = 'flex';
+  // Draw preview canvas
+  drawPreview(d, toneLabel, prompt);
 
-  // Prompt display
-  document.getElementById('prompt-display-card').style.display = 'block';
-  document.getElementById('prompt-display').textContent = prompt;
+  // Store preview
+  C.previewDataURL = document.getElementById('preview-canvas').toDataURL('image/jpeg', 0.85);
 
-  // Auto-save
-  if (STATE.settings.autosave) {
-    addToGalleryInternal();
-  }
-
-  // Update output panel
-  updateOutputPanel();
+  document.getElementById('result-area').classList.add('show');
+  document.getElementById('scroll-body').scrollTo({ top: document.getElementById('result-area').offsetTop - 10, behavior: 'smooth' });
 }
 
-// ====== CANVAS GENERATOR ======
-function createIllustCanvas(data, prompt, styleDesc, toneDesc) {
-  const canvas = document.createElement('canvas');
-  canvas.width = 800;
-  canvas.height = 560;
+// ── CANVAS PREVIEW ──
+function drawPreview(d, toneLabel, prompt) {
+  const canvas = document.getElementById('preview-canvas');
   const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
 
-  // Background based on tone
   const toneColors = {
-    warm: ['#F4A460','#E8795A','#C0392B'],
-    cool: ['#87CEEB','#5B9BD5','#2980B9'],
-    mono: ['#E0E0E0','#999','#444'],
-    vivid: ['#FF6B6B','#FFD93D','#6BCB77'],
-    earth: ['#D4A843','#8B6914','#5C4A1E'],
-    pastel: ['#FFB3BA','#FFDDB3','#B5EAD7'],
-    night: ['#1A2744','#2C3E7A','#6C63FF'],
-    vintage: ['#C9B18F','#8B7355','#5C4A3A']
+    warm:['#F4A460','#E87950','#C0392B'], cool:['#87CEEB','#5B9BD5','#2980B9'],
+    mono:['#E0E0E0','#999','#444'],       vivid:['#FF6B6B','#FFD93D','#4D96FF'],
+    earth:['#D4A843','#8B6914','#5C4A1E'],pastel:['#FFB3BA','#FFDDB3','#B5EAD7'],
+    night:['#1A2744','#2C3E7A','#6C63FF'],vintage:['#C9B18F','#8B7355','#5C4A3A']
   };
-
-  const colors = toneColors[STATE.tone] || toneColors.warm;
+  const cols = toneColors[C.tone] || toneColors.warm;
 
   // Sky gradient
-  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  grad.addColorStop(0, colors[0]);
-  grad.addColorStop(0.5, colors[1]);
-  grad.addColorStop(1, colors[2]);
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const g = ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0, cols[0]); g.addColorStop(.55, cols[1]); g.addColorStop(1, cols[2]);
+  ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
 
-  // Style-specific texture overlay
-  applyStyleTexture(ctx, canvas.width, canvas.height, STATE.style, STATE.tone);
+  // Style texture
+  applyTexture(ctx, W, H, C.style);
 
-  // Composition elements based on prompt keywords
-  drawCompositionElements(ctx, canvas.width, canvas.height, prompt, colors, STATE.style);
-
-  // Vignette
-  const vignette = ctx.createRadialGradient(400,280,100,400,280,500);
-  vignette.addColorStop(0, 'rgba(0,0,0,0)');
-  vignette.addColorStop(1, 'rgba(0,0,0,0.35)');
-  ctx.fillStyle = vignette;
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  // Style label
-  ctx.fillStyle = 'rgba(255,255,255,0.85)';
-  ctx.font = 'bold 13px sans-serif';
-  ctx.fillText(styleDesc, 16, canvas.height - 16);
-
-  return canvas;
-}
-
-function applyStyleTexture(ctx, w, h, style, tone) {
-  ctx.save();
-  if (style === 'pencil' || style === 'sketch') {
-    // Pencil lines
-    ctx.globalAlpha = 0.12;
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 0.8;
-    for(let i=0; i<60; i++) {
-      ctx.beginPath();
-      const x = Math.random()*w, y = Math.random()*h;
-      ctx.moveTo(x, y);
-      ctx.lineTo(x + (Math.random()-0.5)*80, y + (Math.random()-0.5)*80);
-      ctx.stroke();
-    }
-  } else if (style === 'watercolor') {
-    // Watercolor blobs
-    ctx.globalAlpha = 0.15;
-    for(let i=0; i<8; i++) {
-      const rg = ctx.createRadialGradient(
-        Math.random()*w, Math.random()*h, 20,
-        Math.random()*w, Math.random()*h, 120
-      );
-      rg.addColorStop(0, 'rgba(255,255,255,0.4)');
-      rg.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.fillStyle = rg;
-      ctx.fillRect(0,0,w,h);
-    }
-  } else if (style === 'oil') {
-    // Oil paint strokes
-    ctx.globalAlpha = 0.1;
-    for(let i=0; i<30; i++) {
-      ctx.strokeStyle = `rgba(${Math.random()*50},${Math.random()*30},${Math.random()*20},0.5)`;
-      ctx.lineWidth = Math.random()*8+2;
-      ctx.beginPath();
-      const x = Math.random()*w;
-      ctx.moveTo(x, 0);
-      ctx.quadraticCurveTo(x+(Math.random()-0.5)*100, h/2, x+(Math.random()-0.5)*60, h);
-      ctx.stroke();
-    }
-  } else if (style === 'acrylic') {
-    // Acrylic - bold color patches
-    ctx.globalAlpha = 0.08;
-    for(let i=0; i<15; i++) {
-      ctx.fillStyle = `rgba(${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},${Math.floor(Math.random()*255)},0.3)`;
-      ctx.beginPath();
-      ctx.ellipse(Math.random()*w, Math.random()*h, 60+Math.random()*100, 30+Math.random()*60, Math.random()*Math.PI, 0, Math.PI*2);
-      ctx.fill();
-    }
-  } else if (style === 'ink') {
-    // Ink - dark lines
-    ctx.globalAlpha = 0.2;
-    ctx.strokeStyle = '#1A2744';
-    ctx.lineWidth = 1.5;
-    for(let i=0; i<20; i++) {
-      ctx.beginPath();
-      ctx.moveTo(Math.random()*w, Math.random()*h);
-      ctx.lineTo(Math.random()*w, Math.random()*h);
-      ctx.stroke();
-    }
-  }
-  ctx.restore();
-}
-
-function drawCompositionElements(ctx, w, h, prompt, colors, style) {
-  ctx.save();
-  ctx.globalAlpha = 0.6;
-
+  // Scene elements
   const p = prompt.toLowerCase();
+  const horizon = H * (p.includes('空') || p.includes('山') ? 0.42 : 0.55);
 
-  // Horizon line
-  const horizon = h * (p.includes('空') || p.includes('雲') ? 0.45 : 0.55);
-  ctx.fillStyle = 'rgba(0,0,0,0.08)';
-  ctx.fillRect(0, horizon, w, h - horizon);
+  // Ground
+  ctx.fillStyle = 'rgba(0,0,0,0.1)';
+  ctx.fillRect(0, horizon, W, H - horizon);
 
-  // Sun/Moon
-  if (p.includes('夕') || p.includes('夕暮') || p.includes('sunset')) {
-    const sunGrad = ctx.createRadialGradient(w*0.7, horizon, 5, w*0.7, horizon, 80);
-    sunGrad.addColorStop(0, 'rgba(255,220,100,0.9)');
-    sunGrad.addColorStop(0.5, 'rgba(255,150,50,0.5)');
-    sunGrad.addColorStop(1, 'rgba(255,50,0,0)');
-    ctx.fillStyle = sunGrad;
-    ctx.fillRect(0,0,w,h);
+  // Sun glow (夕暮れ系)
+  if (p.includes('夕') || p.includes('夕暮')) {
+    const sg = ctx.createRadialGradient(W*.7, horizon, 10, W*.7, horizon, 140);
+    sg.addColorStop(0,'rgba(255,230,100,.85)');
+    sg.addColorStop(.5,'rgba(255,140,40,.4)');
+    sg.addColorStop(1,'rgba(255,40,0,0)');
+    ctx.fillStyle = sg; ctx.fillRect(0,0,W,H);
   }
-
-  if (p.includes('夜') || p.includes('月') || p.includes('星')) {
-    // Stars
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
-    for(let i=0; i<30; i++) {
+  // Stars / moon (夜系)
+  if (p.includes('夜') || p.includes('月') || C.tone === 'night') {
+    ctx.fillStyle = 'rgba(255,255,255,.75)';
+    for(let i=0;i<25;i++){
       ctx.beginPath();
-      ctx.arc(Math.random()*w, Math.random()*(horizon*0.8), Math.random()*2+0.5, 0, Math.PI*2);
+      ctx.arc(Math.random()*W, Math.random()*horizon*.9, Math.random()*1.8+.4,0,Math.PI*2);
       ctx.fill();
     }
-    // Moon
-    ctx.beginPath();
-    ctx.arc(w*0.75, h*0.2, 30, 0, Math.PI*2);
-    ctx.fillStyle = 'rgba(255,250,200,0.9)';
-    ctx.fill();
+    ctx.beginPath(); ctx.arc(W*.78,H*.18,22,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,250,200,.9)'; ctx.fill();
   }
-
-  // Silhouette figure (人物がいる場合)
-  if (p.includes('少女') || p.includes('人') || p.includes('girl') || p.includes('figure') || p.includes('女') || p.includes('男')) {
-    drawFigureSilhouette(ctx, w*0.45, horizon, h - horizon, style);
-  }
-
-  // Trees
-  if (p.includes('森') || p.includes('木') || p.includes('tree') || p.includes('林')) {
-    for(let i=0; i<6; i++) {
-      drawTree(ctx, (i*0.18+0.05)*w + Math.random()*40, horizon, 80+Math.random()*60, style);
-    }
-  }
-
-  // Water/Sea
-  if (p.includes('海') || p.includes('湖') || p.includes('川') || p.includes('水')) {
-    const waterGrad = ctx.createLinearGradient(0, horizon+20, 0, h);
-    waterGrad.addColorStop(0, 'rgba(100,180,220,0.5)');
-    waterGrad.addColorStop(1, 'rgba(30,80,150,0.7)');
-    ctx.fillStyle = waterGrad;
-    ctx.fillRect(0, horizon+20, w, h);
-    // Reflection ripples
-    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-    ctx.lineWidth = 1;
-    for(let i=0; i<8; i++) {
+  // Water
+  if (p.includes('海') || p.includes('湖') || p.includes('川') || p.includes('港')) {
+    const wg = ctx.createLinearGradient(0,horizon,0,H);
+    wg.addColorStop(0,'rgba(80,160,220,.5)'); wg.addColorStop(1,'rgba(20,70,140,.7)');
+    ctx.fillStyle = wg; ctx.fillRect(0,horizon+10,W,H);
+    ctx.strokeStyle='rgba(255,255,255,.25)'; ctx.lineWidth=1;
+    for(let i=0;i<7;i++){
       ctx.beginPath();
-      ctx.ellipse(w/2, horizon+50+i*30, 100+i*20, 5, 0, 0, Math.PI);
+      ctx.ellipse(W/2,horizon+30+i*28,90+i*18,4,0,0,Math.PI);
       ctx.stroke();
     }
   }
-
-  // Buildings
-  if (p.includes('街') || p.includes('建物') || p.includes('カフェ') || p.includes('城') || p.includes('路地')) {
-    drawBuildings(ctx, w, horizon, style);
+  // Trees
+  if (p.includes('森') || p.includes('木') || p.includes('林')) {
+    ['#1A3A1A','#143014','#0F280F'].forEach((c,i) => {
+      [.08,.22,.78,.92].forEach(x => {
+        const h2 = 80+Math.random()*50;
+        ctx.fillStyle = c;
+        ctx.fillRect(x*W-4, horizon-h2, 8, h2*.25);
+        ctx.beginPath();
+        ctx.ellipse(x*W, horizon-h2*.6, h2*.28, h2*.55, 0,0,Math.PI*2);
+        ctx.fill();
+      });
+    });
   }
-
+  // Buildings
+  if (p.includes('街') || p.includes('路地') || p.includes('カフェ') || p.includes('港')) {
+    ctx.fillStyle='rgba(25,25,50,.65)';
+    [[.08*W,80,110],[.22*W,55,90],[.38*W,90,145],[.62*W,65,100],[.78*W,110,130],[.92*W,70,95]]
+      .forEach(([x,w,h]) => {
+        ctx.fillRect(x,horizon-h,w,h);
+        ctx.fillStyle='rgba(255,220,80,.45)';
+        for(let wy=8;wy<h-10;wy+=18) for(let wx=6;wx<w-6;wx+=14)
+          if(Math.random()>.45) ctx.fillRect(x+wx,horizon-h+wy,5,7);
+        ctx.fillStyle='rgba(25,25,50,.65)';
+      });
+  }
+  // Figure
+  if (p.includes('少女')||p.includes('人')||p.includes('女')||p.includes('男')) {
+    const fh = (H-horizon)*.62;
+    ctx.fillStyle='rgba(25,25,45,.72)';
+    ctx.beginPath(); ctx.ellipse(W*.42,horizon-fh*.08,fh*.11,fh*.32,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(W*.42,horizon-fh*.5,fh*.09,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(W*.42,horizon-fh*.42);
+    ctx.quadraticCurveTo(W*.42+fh*.22,horizon-fh*.28,W*.42+fh*.14,horizon-fh*.08);
+    ctx.lineWidth=fh*.055; ctx.strokeStyle='rgba(25,25,45,.68)'; ctx.stroke();
+  }
   // Flowers
-  if (p.includes('花') || p.includes('花畑') || p.includes('cherry')) {
-    for(let i=0; i<20; i++) {
-      const fx = Math.random()*w;
-      const fy = horizon + Math.random()*(h-horizon)*0.7;
+  if (p.includes('花') || p.includes('花畑')) {
+    for(let i=0;i<18;i++){
       ctx.beginPath();
-      ctx.arc(fx, fy, 6+Math.random()*8, 0, Math.PI*2);
-      ctx.fillStyle = `rgba(255,${Math.floor(Math.random()*100+100)},${Math.floor(Math.random()*150)},0.7)`;
+      ctx.arc(Math.random()*W, horizon+Math.random()*(H-horizon)*.65, 5+Math.random()*7,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,${100+Math.floor(Math.random()*120)},${Math.floor(Math.random()*130)},.7)`;
       ctx.fill();
     }
   }
+  // Vignette
+  const vig = ctx.createRadialGradient(W/2,H/2,80,W/2,H/2,500);
+  vig.addColorStop(0,'rgba(0,0,0,0)'); vig.addColorStop(1,'rgba(0,0,0,.32)');
+  ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
 
-  ctx.restore();
+  // Style watermark
+  ctx.fillStyle='rgba(255,255,255,.7)'; ctx.font='bold 12px sans-serif';
+  ctx.fillText(STYLES[C.style]||C.style, 12, H-12);
 }
 
-function drawFigureSilhouette(ctx, x, baseY, groundH, style) {
-  const figH = groundH * 0.6;
+function applyTexture(ctx, W, H, style) {
   ctx.save();
-  ctx.fillStyle = 'rgba(30,30,50,0.75)';
-  // Body
-  ctx.beginPath();
-  ctx.ellipse(x, baseY - figH*0.1, figH*0.12, figH*0.35, 0, 0, Math.PI*2);
-  ctx.fill();
-  // Head
-  ctx.beginPath();
-  ctx.arc(x, baseY - figH*0.52, figH*0.1, 0, Math.PI*2);
-  ctx.fill();
-  // Hair (flowing)
-  if (style !== 'ink') {
-    ctx.beginPath();
-    ctx.moveTo(x, baseY - figH*0.42);
-    ctx.quadraticCurveTo(x+figH*0.25, baseY - figH*0.3, x+figH*0.15, baseY - figH*0.1);
-    ctx.lineWidth = figH*0.06;
-    ctx.strokeStyle = 'rgba(30,30,50,0.7)';
-    ctx.stroke();
-  }
-  ctx.restore();
-}
-
-function drawTree(ctx, x, baseY, h, style) {
-  ctx.save();
-  ctx.fillStyle = 'rgba(20,50,20,0.7)';
-  // Trunk
-  ctx.fillRect(x-4, baseY, 8, h*0.3);
-  // Canopy
-  if (style === 'ink') {
-    ctx.beginPath();
-    ctx.moveTo(x, baseY - h);
-    ctx.lineTo(x - h*0.35, baseY);
-    ctx.lineTo(x + h*0.35, baseY);
-    ctx.closePath();
-    ctx.fill();
-  } else {
-    ctx.beginPath();
-    ctx.ellipse(x, baseY - h*0.5, h*0.3, h*0.5, 0, 0, Math.PI*2);
-    ctx.fill();
-  }
-  ctx.restore();
-}
-
-function drawBuildings(ctx, w, horizon, style) {
-  ctx.save();
-  ctx.fillStyle = 'rgba(30,30,60,0.65)';
-  const bldgs = [
-    {x:0.1*w, w:80, h:120},{x:0.25*w, w:60, h:90},{x:0.35*w, w:100, h:160},
-    {x:0.55*w, w:70, h:110},{x:0.7*w, w:120, h:140},{x:0.88*w, w:80, h:100}
-  ];
-  bldgs.forEach(b => {
-    ctx.fillRect(b.x, horizon - b.h, b.w, b.h);
-    // Windows
-    ctx.fillStyle = 'rgba(255,220,100,0.5)';
-    for(let wy=0; wy<b.h-10; wy+=20) {
-      for(let wx=8; wx<b.w-8; wx+=16) {
-        if (Math.random() > 0.4) ctx.fillRect(b.x+wx, horizon-b.h+wy+8, 6, 8);
-      }
+  if (style==='pencil'||style==='sketch') {
+    ctx.globalAlpha=.09; ctx.strokeStyle='#333'; ctx.lineWidth=.7;
+    for(let i=0;i<50;i++){
+      ctx.beginPath();
+      const x=Math.random()*W,y=Math.random()*H;
+      ctx.moveTo(x,y); ctx.lineTo(x+(Math.random()-.5)*70,y+(Math.random()-.5)*70);
+      ctx.stroke();
     }
-    ctx.fillStyle = 'rgba(30,30,60,0.65)';
-  });
+  } else if (style==='watercolor') {
+    ctx.globalAlpha=.13;
+    for(let i=0;i<6;i++){
+      const rg=ctx.createRadialGradient(Math.random()*W,Math.random()*H,15,Math.random()*W,Math.random()*H,110);
+      rg.addColorStop(0,'rgba(255,255,255,.35)'); rg.addColorStop(1,'rgba(255,255,255,0)');
+      ctx.fillStyle=rg; ctx.fillRect(0,0,W,H);
+    }
+  } else if (style==='oil') {
+    ctx.globalAlpha=.08;
+    for(let i=0;i<25;i++){
+      ctx.strokeStyle=`rgba(${Math.random()*40},${Math.random()*25},${Math.random()*15},.45)`;
+      ctx.lineWidth=Math.random()*7+2;
+      ctx.beginPath();
+      const x=Math.random()*W;
+      ctx.moveTo(x,0); ctx.quadraticCurveTo(x+(Math.random()-.5)*90,H/2,x+(Math.random()-.5)*50,H);
+      ctx.stroke();
+    }
+  }
   ctx.restore();
 }
 
-// ====== UI HELPERS ======
-function switchToPreview() {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-preview').classList.add('active');
-  document.querySelectorAll('.tab-btn')[1].classList.add('active');
-}
-
-function regenerate() {
-  switchTab_noEvent('create');
-  setTimeout(generateIllust, 100);
-}
-
-function switchTab_noEvent(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  const tabs = ['create','preview','gallery','output','settings'];
-  const idx = tabs.indexOf(name);
-  if (idx >= 0) document.querySelectorAll('.tab-btn')[idx].classList.add('active');
-}
-
-function addToGallery() {
-  addToGalleryInternal();
-  showSnack('📚 ギャラリーに追加しました');
-}
-
-function addToGalleryInternal() {
-  if (!STATE.currentImage) return;
-  const styleLabels = {
-    pencil:'鉛筆デッサン', watercolor:'水彩画', acrylic:'アクリル画',
-    oil:'油彩', ink:'ペン画', pastel:'パステル', digital:'デジタル', sketch:'スケッチ'
+// ── SEND TO DRAW (bridge.js相当のインライン実装) ──
+function sendToDraw() {
+  if (!C.previewDataURL) { snack('先に提案を生成してください'); return; }
+  const payload = {
+    source: 'concept',
+    destination: 'draw',
+    imageDataURL: C.previewDataURL,
+    meta: {
+      prompt: document.getElementById('prompt').value,
+      style: C.style,
+      tone: C.tone,
+      result: C.result,
+      date: new Date().toISOString()
+    }
   };
+  // shared/bridge.js が読み込まれていれば IS_Bridge.send() を使う
+  // なければ直接 localStorage に書いてdrawを開く
+  if (typeof IS_Bridge !== 'undefined') {
+    IS_Bridge.send(payload);
+  } else {
+    try {
+      localStorage.setItem('is_transfer', JSON.stringify(payload));
+    } catch(e) {
+      snack('⚠️ データが大きすぎます。PNG保存してdrawで開いてください');
+      return;
+    }
+  }
+  snack('✅ drawアプリに送りました！');
+  // drawが同リポジトリ内にある場合はページ遷移
+  setTimeout(() => {
+    if (window.location.pathname.includes('/concept')) {
+      window.location.href = '../draw/index.html#import';
+    }
+  }, 800);
+}
+
+// ── HISTORY ──
+function saveHistory(prompt, styleLabel) {
   const item = {
     id: Date.now(),
-    image: STATE.currentImage,
-    prompt: STATE.currentPrompt,
-    style: styleLabels[STATE.style] || STATE.style,
-    tone: STATE.tone,
-    format: STATE.format,
+    prompt,
+    styleLabel,
+    tone: C.tone,
+    thumb: C.previewDataURL,
     date: new Date().toLocaleDateString('ja-JP')
   };
-  // Avoid duplicates
-  if (STATE.gallery.length === 0 || STATE.gallery[0].id !== item.id) {
-    STATE.gallery.unshift(item);
-    if (STATE.gallery.length > 50) STATE.gallery.pop();
-    saveGallery();
-    renderGallery();
-  }
+  C.history.unshift(item);
+  if (C.history.length > 10) C.history.pop();
+  try { localStorage.setItem('is_concept_history', JSON.stringify(C.history)); } catch(e) {}
+  renderHistory();
 }
 
-function renderGallery() {
-  const grid = document.getElementById('gallery-grid');
-  document.getElementById('gallery-count').textContent = STATE.gallery.length + ' 点';
+function loadHistory() {
+  try {
+    const h = localStorage.getItem('is_concept_history');
+    if (h) C.history = JSON.parse(h);
+    renderHistory();
+  } catch(e) {}
+}
 
-  if (STATE.gallery.length === 0) {
-    grid.innerHTML = `<div class="gallery-empty">
-      <div class="ge-icon">🖼</div>
-      <p>まだ作品がありません<br>「作成」タブで生成してみましょう</p>
-    </div>`;
-    return;
-  }
-
-  grid.innerHTML = STATE.gallery.map((item, i) => `
-    <div class="gallery-item" onclick="openDetail(${i})">
-      <img src="${item.image}" alt="${item.prompt}">
-      <div class="gallery-meta">
-        <span class="g-style">${item.style}</span>
-        <span class="g-date">${item.date}</span>
-        <div class="g-desc">${item.prompt}</div>
+function renderHistory() {
+  const sec = document.getElementById('hist-section');
+  const list = document.getElementById('hist-list');
+  if (C.history.length === 0) { sec.style.display = 'none'; return; }
+  sec.style.display = 'block';
+  list.innerHTML = C.history.map((item,i) => `
+    <div class="hist-item" onclick="loadHistory_item(${i})">
+      <div class="hist-thumb">
+        ${item.thumb ? `<img src="${item.thumb}" alt="">` : ''}
+      </div>
+      <div class="hist-text">
+        <div class="ht">${item.prompt}</div>
+        <div class="hd">${item.styleLabel} · ${item.date}</div>
       </div>
     </div>
   `).join('');
 }
 
-function openDetail(index) {
-  STATE.selectedGalleryIndex = index;
-  const item = STATE.gallery[index];
-  document.getElementById('detail-title').textContent = item.date;
-  document.getElementById('detail-image').src = item.image;
-  document.getElementById('detail-style').textContent = item.style;
-  document.getElementById('detail-desc').textContent = item.prompt;
-  document.getElementById('detail-modal').classList.add('open');
+function loadHistory_item(i) {
+  const item = C.history[i];
+  document.getElementById('prompt').value = item.prompt;
+  C.style = item.style || 'pencil';
+  C.tone = item.tone || 'warm';
+  document.querySelectorAll('.schip').forEach(c => {
+    c.classList.toggle('on', c.dataset.s === C.style);
+  });
+  document.querySelectorAll('.tswatch').forEach(s => {
+    s.classList.toggle('on', s.dataset.id === C.tone);
+  });
+  scrollToTop();
+  snack('📂 読み込みました');
 }
 
-function closeDetail() {
-  document.getElementById('detail-modal').classList.remove('open');
+// ── UTILS ──
+function showLoading(msg) {
+  const el = document.getElementById('loading');
+  document.getElementById('loading-text').textContent = msg;
+  el.classList.add('show');
 }
-
-function deleteGalleryItem() {
-  if (STATE.selectedGalleryIndex < 0) return;
-  STATE.gallery.splice(STATE.selectedGalleryIndex, 1);
-  saveGallery();
-  renderGallery();
-  closeDetail();
-  showSnack('🗑 削除しました');
+function hideLoading() {
+  document.getElementById('loading').classList.remove('show');
 }
-
-function loadToCreate() {
-  const item = STATE.gallery[STATE.selectedGalleryIndex];
-  if (!item) return;
-  document.getElementById('prompt-input').value = item.prompt;
-  closeDetail();
-  switchTab_noEvent('create');
-  showSnack('✏️ 設定を読み込みました');
+function snack(msg) {
+  const el = document.getElementById('snack');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2500);
 }
-
-// ====== OUTPUT ======
-function updateDiaryDate() {
-  const d = new Date();
-  document.getElementById('diary-date-label').textContent =
-    d.getFullYear() + '年' + (d.getMonth()+1) + '月' + d.getDate() + '日';
+function scrollToTop() {
+  document.getElementById('scroll-body').scrollTo({ top: 0, behavior: 'smooth' });
 }
-
-function updateOutputPanel() {
-  const slot = document.getElementById('diary-image-slot');
-  if (STATE.currentImage) {
-    slot.innerHTML = `<img src="${STATE.currentImage}" style="width:100%;height:100%;object-fit:cover;" alt="">`;
+function goHome() {
+  if (window.location.pathname.includes('/concept')) {
+    window.location.href = '../index.html';
+  } else {
+    history.back();
   }
 }
-
-// ====== EXPORT ======
-function openExportSheet() {
-  document.getElementById('export-sheet').classList.add('open');
-}
-
-function closeExportSheet(e) {
-  if (e.target === document.getElementById('export-sheet')) {
-    document.getElementById('export-sheet').classList.remove('open');
-  }
-}
-
-function exportAs(type) {
-  document.getElementById('export-sheet').classList.remove('open');
-
-  if (!STATE.currentImage) {
-    showSnack('⚠️ 先にイラストを生成してください');
-    return;
-  }
-
-  if (type === 'png') {
-    const a = document.createElement('a');
-    a.href = STATE.currentImage;
-    a.download = `illust-${Date.now()}.png`;
-    a.click();
-    showSnack('💾 PNG保存しました');
-
-  } else if (type === 'diary-img') {
-    const canvas = createDiaryCanvas();
-    const a = document.createElement('a');
-    a.href = canvas.toDataURL('image/png');
-    a.download = `diary-${Date.now()}.png`;
-    a.click();
-    showSnack('📔 日記フォーマットで保存しました');
-
-  } else if (type === 'postcard') {
-    const a = document.createElement('a');
-    a.href = STATE.currentImage;
-    a.download = `postcard-${Date.now()}.png`;
-    a.click();
-    showSnack('📮 はがきサイズで保存しました');
-
-  } else if (type === 'share') {
-    if (navigator.share) {
-      fetch(STATE.currentImage)
-        .then(r => r.blob())
-        .then(blob => {
-          const file = new File([blob], 'illust.png', { type: 'image/png' });
-          navigator.share({ files: [file], title: 'Illust Studio', text: STATE.currentPrompt });
-        });
-    } else {
-      showSnack('⚠️ お使いの環境では共有できません');
-    }
-
-  } else if (type === 'clipboard') {
-    if (navigator.clipboard && ClipboardItem) {
-      fetch(STATE.currentImage)
-        .then(r => r.blob())
-        .then(blob => navigator.clipboard.write([new ClipboardItem({'image/png': blob})]));
-      showSnack('📋 コピーしました');
-    } else {
-      showSnack('⚠️ このブラウザはクリップボードコピー非対応です');
-    }
-  }
-}
-
-function createDiaryCanvas() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 1080;
-  canvas.height = 810;
-  const ctx = canvas.getContext('2d');
-
-  // Background
-  ctx.fillStyle = '#F7F3EE';
-  ctx.fillRect(0,0,1080,810);
-
-  // Header bar
-  ctx.fillStyle = '#1A2744';
-  ctx.fillRect(0,0,1080,60);
-  ctx.fillStyle = 'white';
-  ctx.font = 'bold 22px sans-serif';
-  const d = new Date();
-  ctx.fillText(`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`, 24, 38);
-  ctx.font = '14px sans-serif';
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.fillText('My Sketch Book', 900, 38);
-
-  // Illustration
-  const img = new Image();
-  img.src = STATE.currentImage;
-  ctx.drawImage(img, 24, 80, 680, 480);
-
-  // Lines for diary text
-  ctx.strokeStyle = '#DDD8D0';
-  ctx.lineWidth = 1;
-  for(let y=80; y<760; y+=32) {
-    ctx.beginPath();
-    ctx.moveTo(724, y);
-    ctx.lineTo(1056, y);
-    ctx.stroke();
-  }
-  ctx.fillStyle = '#B0A898';
-  ctx.font = '12px sans-serif';
-  ctx.fillText('今日の絵：', 724, 100);
-
-  return canvas;
-}
-
-// ====== SETTINGS ======
-function toggleSetting(el) {
-  el.classList.toggle('on');
-  const id = el.id;
-  if (id === 'toggle-hires') STATE.settings.hires = el.classList.contains('on');
-  if (id === 'toggle-autosave') STATE.settings.autosave = el.classList.contains('on');
-  if (id === 'toggle-translate') STATE.settings.translate = el.classList.contains('on');
-  saveSettings();
-}
-
-function exportGalleryJSON() {
-  const data = JSON.stringify(STATE.gallery, null, 2);
-  const blob = new Blob([data], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `illust-gallery-${Date.now()}.json`;
-  a.click();
-  showSnack('📤 JSONエクスポートしました');
-}
-
-function importGalleryJSON() {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.json';
-  input.onchange = e => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onload = ev => {
-      try {
-        const data = JSON.parse(ev.target.result);
-        STATE.gallery = [...data, ...STATE.gallery];
-        saveGallery();
-        renderGallery();
-        showSnack('📥 インポートしました (' + data.length + ' 件)');
-      } catch { showSnack('⚠️ ファイルの読み込みに失敗しました'); }
-    };
-    reader.readAsText(file);
-  };
-  input.click();
-}
-
-function clearGallery() {
-  if (!confirm('ギャラリーをすべて削除しますか？')) return;
-  STATE.gallery = [];
-  saveGallery();
-  renderGallery();
-  showSnack('🗑 クリアしました');
-}
-
-// ====== SNACKBAR ======
-function showSnack(msg) {
-  const sb = document.getElementById('snackbar');
-  sb.textContent = msg;
-  sb.classList.add('show');
-  setTimeout(() => sb.classList.remove('show'), 2500);
+function loadKeys() {
+  // APIキーはis_claude / is_geminiをそのまま参照（drawと共有）
 }
 </script>
 </body>
 </html>
-illust-studio.html
-illust-studio.html を表示しています。 
+concept.html
+concept.html を表示しています。

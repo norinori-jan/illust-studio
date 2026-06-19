@@ -1,4 +1,4 @@
-何も選択されていません 
+何も選択されていません
 
 コンテンツへ
 Gmail でのスクリーン リーダーの使用
@@ -17,565 +17,163 @@ AI なら多くの作業を短時間で
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Illust Studio</title>
+<title>Draw — Illust Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --paper: #F8F5F0;
-  --paper2: #EDE8E0;
-  --ink: #2E2A26;
-  --ink2: #7A7269;
-  --navy: #1C2B4A;
-  --gold: #C8963C;
-  --red: #B83A2E;
-  --sage: #4A7C5A;
-  --r: 10px;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-html, body { height: 100%; overflow: hidden; background: #1C2B4A; }
-
-body {
-  font-family: 'Noto Sans JP', sans-serif;
-  color: var(--ink);
-  display: flex;
-  flex-direction: column;
-  height: 100dvh;
-}
-
-/* ── HEADER ── */
-header {
-  background: var(--navy);
-  color: white;
-  padding: 10px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-  z-index: 50;
-}
-header h1 { font-family: 'Noto Serif JP', serif; font-size: 15px; letter-spacing:.06em; flex:1; }
-.hbadge {
-  background: var(--gold);
-  color: var(--navy);
-  font-size: 10px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 20px;
-  letter-spacing: .06em;
-}
-
-/* ── TOOL BAR ── */
-.toolbar {
-  background: var(--navy);
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.toolbar::-webkit-scrollbar { display: none; }
-
-.tool-sep { width: 1px; height: 28px; background: rgba(255,255,255,0.15); margin: 0 2px; flex-shrink:0; }
-
-.tbtn {
-  background: rgba(255,255,255,0.08);
-  border: 1.5px solid rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.75);
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-size: 13px;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  transition: all 0.15s;
-  line-height: 1;
-}
-.tbtn.active {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--navy);
-  font-weight: 600;
-}
-.tbtn:active { opacity: 0.7; }
-
-/* Size slider */
-.size-wrap {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.size-wrap span { color: rgba(255,255,255,0.6); font-size: 11px; white-space: nowrap; }
-input[type=range] {
-  -webkit-appearance: none;
-  width: 70px;
-  height: 4px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 2px;
-  outline: none;
-}
-input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 16px; height: 16px;
-  border-radius: 50%;
-  background: var(--gold);
-  cursor: pointer;
-}
-
-/* Opacity */
-.opacity-wrap { display: flex; align-items: center; gap: 6px; flex-shrink:0; }
-.opacity-wrap span { color: rgba(255,255,255,0.6); font-size: 11px; }
-
-/* Color palette row */
-.colorbar {
-  background: #141f33;
-  padding: 6px 10px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-  border-top: 1px solid rgba(255,255,255,0.06);
-}
-.colorbar::-webkit-scrollbar { display: none; }
-
-.cswatches { display: flex; gap: 6px; align-items: center; }
-.cswatch {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2.5px solid transparent;
-  transition: border-color 0.15s, transform 0.1s;
-  flex-shrink: 0;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.4);
-}
-.cswatch.active { border-color: white; transform: scale(1.2); }
-
-.custom-color-btn {
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  background: conic-gradient(red,yellow,lime,cyan,blue,magenta,red);
-  cursor: pointer;
-  border: 2px solid rgba(255,255,255,0.3);
-  flex-shrink: 0;
-  position: relative;
-}
-#custom-color-input {
-  position: absolute;
-  opacity: 0;
-  width: 28px; height: 28px;
-  cursor: pointer;
-  border-radius: 50%;
-  top: 0; left: 0;
-}
-
-/* ── CANVAS AREA ── */
-.canvas-container {
-  flex: 1;
-  position: relative;
-  overflow: hidden;
-  background: #2a3a55;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.canvas-shadow-wrap {
-  position: relative;
-  box-shadow: 0 4px 32px rgba(0,0,0,0.5);
-}
-
-canvas#drawing {
-  display: block;
-  touch-action: none;
-  cursor: crosshair;
-}
-
-/* Canvas overlay label */
-.canvas-hint {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
-  color: rgba(255,255,255,0.2);
-  pointer-events: none;
-  font-size: 14px;
-  line-height: 2;
-}
-.canvas-hint.hidden { display: none; }
-
-/* ── BOTTOM TABS ── */
-.bottom-tabs {
-  background: var(--navy);
-  border-top: 1px solid rgba(255,255,255,0.1);
-  display: flex;
-  flex-shrink: 0;
-}
-.btab {
-  flex: 1;
-  padding: 10px 4px 12px;
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.45);
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 10px;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 3px;
-  transition: color 0.15s;
-}
-.btab .bicon { font-size: 19px; line-height: 1; }
-.btab.active { color: var(--gold); }
-
-/* ── PANELS (slide-up sheets) ── */
-.panel-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(20,31,51,0.7);
-  z-index: 100;
-  display: none;
-  align-items: flex-end;
-}
-.panel-overlay.open { display: flex; }
-.panel-sheet {
-  background: var(--paper);
-  border-radius: 20px 20px 0 0;
-  width: 100%;
-  max-height: 75dvh;
-  overflow-y: auto;
-  padding: 0 0 32px;
-}
-.sheet-drag {
-  width: 40px; height: 4px;
-  background: #C8C0B4;
-  border-radius: 2px;
-  margin: 12px auto 0;
-}
-.sheet-head {
-  padding: 14px 18px 12px;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 16px;
-  border-bottom: 1px solid var(--paper2);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.sheet-close {
-  background: var(--paper2);
-  border: none;
-  width: 28px; height: 28px;
-  border-radius: 50%;
-  font-size: 14px;
-  cursor: pointer;
-  color: var(--ink2);
-}
-.sheet-body { padding: 16px 18px; }
-
-/* AI Color Panel */
-.ai-panel { padding: 16px 18px; }
-
-.ai-mode-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-.ai-mode-btn {
-  border: 2px solid var(--paper2);
-  border-radius: 10px;
-  padding: 12px 10px;
-  cursor: pointer;
-  background: white;
-  text-align: center;
-  transition: all 0.15s;
-}
-.ai-mode-btn.selected { border-color: var(--navy); background: var(--paper); }
-.ai-mode-btn .mi { font-size: 22px; display: block; margin-bottom: 4px; }
-.ai-mode-btn .mt { font-size: 12px; font-weight: 500; }
-.ai-mode-btn .ms { font-size: 10px; color: var(--ink2); margin-top: 2px; }
-
-.style-chips-mini {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-bottom: 14px;
-}
-.schip {
-  border: 1.5px solid var(--paper2);
-  border-radius: 20px;
-  padding: 5px 12px;
-  font-size: 12px;
-  cursor: pointer;
-  background: white;
-  color: var(--ink2);
-  transition: all 0.15s;
-}
-.schip.selected { border-color: var(--navy); background: var(--navy); color: white; }
-
-.ai-prompt-input {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1.5px solid var(--paper2);
-  border-radius: 8px;
-  font-family: 'Noto Sans JP', sans-serif;
-  font-size: 13px;
-  background: white;
-  color: var(--ink);
-  outline: none;
-  margin-bottom: 12px;
-  resize: none;
-  min-height: 70px;
-  line-height: 1.7;
-}
-.ai-prompt-input:focus { border-color: var(--navy); }
-.ai-prompt-input::placeholder { color: #B0A898; }
-
-.run-btn {
-  width: 100%;
-  padding: 14px;
-  background: var(--navy);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-family: 'Noto Serif JP', serif;
-  font-size: 15px;
-  letter-spacing: .08em;
-  cursor: pointer;
-  transition: opacity 0.2s;
-}
-.run-btn:disabled { opacity: 0.4; }
-.run-btn .rsub { font-family: 'Noto Sans JP',sans-serif; font-size: 11px; opacity: .65; display: block; margin-top: 2px; }
-
-/* AI status */
-.ai-status {
-  background: var(--navy);
-  color: rgba(255,255,255,0.8);
-  font-size: 12px;
-  padding: 8px 14px;
-  display: none;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-.ai-status.show { display: flex; }
-.spin { animation: spin 1s linear infinite; display: inline-block; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
+:root{--paper:#F8F5F0;--paper2:#EDE8E0;--ink:#2E2A26;--ink2:#7A7269;--navy:#1C2B4A;--gold:#C8963C;--red:#B83A2E;--sage:#4A7C5A;--r:10px;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;background:#1C2B4A;}
+body{font-family:'Noto Sans JP',sans-serif;color:var(--ink);display:flex;flex-direction:column;height:100dvh;}
+header{background:var(--navy);color:white;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-shrink:0;}
+header h1{font-family:'Noto Serif JP',serif;font-size:15px;letter-spacing:.06em;flex:1;}
+.hbadge{background:var(--gold);color:var(--navy);font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;}
+.toolbar{background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:8px 10px;display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto;scrollbar-width:none;}
+.toolbar::-webkit-scrollbar{display:none;}
+.tsep{width:1px;height:28px;background:rgba(255,255,255,.15);margin:0 2px;flex-shrink:0;}
+.tbtn{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .15s;line-height:1;font-family:'Noto Sans JP',sans-serif;}
+.tbtn.active{background:var(--gold);border-color:var(--gold);color:var(--navy);font-weight:600;}
+.tbtn:active{opacity:.7;}
+.sw{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.sw span{color:rgba(255,255,255,.6);font-size:11px;white-space:nowrap;}
+input[type=range]{-webkit-appearance:none;width:70px;height:4px;background:rgba(255,255,255,.2);border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--gold);cursor:pointer;}
+.colorbar{background:#141f33;padding:6px 10px;display:flex;align-items:center;gap:6px;flex-shrink:0;overflow-x:auto;scrollbar-width:none;border-top:1px solid rgba(255,255,255,.06);}
+.colorbar::-webkit-scrollbar{display:none;}
+.cswatch{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:border-color .15s,transform .1s;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,.4);}
+.cswatch.active{border-color:white;transform:scale(1.2);}
+.custom-btn{width:28px;height:28px;border-radius:50%;background:conic-gradient(red,yellow,lime,cyan,blue,magenta,red);cursor:pointer;border:2px solid rgba(255,255,255,.3);flex-shrink:0;position:relative;}
+#custom-color-in{position:absolute;opacity:0;width:28px;height:28px;cursor:pointer;border-radius:50%;top:0;left:0;}
+.canvas-container{flex:1;position:relative;overflow:hidden;background:#2a3a55;display:flex;align-items:center;justify-content:center;}
+.canvas-wrap{position:relative;}
+/* Layer canvases stack */
+.canvas-wrap canvas{position:absolute;top:0;left:0;display:block;touch-action:none;}
+#cv-draft{opacity:.4;pointer-events:none;}
+#cv-color{pointer-events:none;}
+#cv-outline{}
+#cv-grid{pointer-events:none;opacity:.55;}
+#cv-cursor{pointer-events:none;}
+/* Active canvas is whichever layer is selected - set by JS */
+.canvas-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;color:rgba(255,255,255,.2);pointer-events:none;font-size:14px;line-height:2;}
+.canvas-hint.hidden{display:none;}
+.zoom-ctrl{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:4px;}
+.zbtn{background:rgba(28,43,74,.8);color:white;border:1px solid rgba(255,255,255,.2);border-radius:6px;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.hbadge2{position:absolute;left:10px;bottom:10px;background:rgba(28,43,74,.7);color:rgba(255,255,255,.5);font-size:10px;padding:4px 8px;border-radius:6px;pointer-events:none;}
+.ai-status{background:var(--navy);color:rgba(255,255,255,.8);font-size:12px;padding:8px 14px;display:none;align-items:center;gap:8px;flex-shrink:0;}
+.ai-status.show{display:flex;}
+.spin{animation:spin 1s linear infinite;display:inline-block;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.bottom-tabs{background:var(--navy);border-top:1px solid rgba(255,255,255,.1);display:flex;flex-shrink:0;}
+.btab{flex:1;padding:10px 4px 12px;background:none;border:none;color:rgba(255,255,255,.45);font-family:'Noto Sans JP',sans-serif;font-size:10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;transition:color .15s;}
+.btab .bi{font-size:19px;line-height:1;}
+.btab.active{color:var(--gold);}
+.panel-overlay{position:fixed;inset:0;background:rgba(20,31,51,.7);z-index:100;display:none;align-items:flex-end;}
+.panel-overlay.open{display:flex;}
+.panel-sheet{background:var(--paper);border-radius:20px 20px 0 0;width:100%;max-height:75dvh;overflow-y:auto;padding:0 0 32px;}
+.sdrag{width:40px;height:4px;background:#C8C0B4;border-radius:2px;margin:12px auto 0;}
+.shead{padding:14px 18px 12px;font-family:'Noto Serif JP',serif;font-size:16px;border-bottom:1px solid var(--paper2);display:flex;align-items:center;justify-content:space-between;}
+.sclose{background:var(--paper2);border:none;width:28px;height:28px;border-radius:50%;font-size:14px;cursor:pointer;color:var(--ink2);}
+.sbody{padding:16px 18px;}
+/* AI panel */
+.ai-mode-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.ai-mode-btn{border:2px solid var(--paper2);border-radius:10px;padding:12px 10px;cursor:pointer;background:white;text-align:center;transition:all .15s;}
+.ai-mode-btn.selected{border-color:var(--navy);background:var(--paper);}
+.ai-mode-btn .mi{font-size:22px;display:block;margin-bottom:4px;}
+.ai-mode-btn .mt{font-size:12px;font-weight:500;}
+.ai-mode-btn .ms{font-size:10px;color:var(--ink2);margin-top:2px;}
+.schips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px;}
+.schip{border:1.5px solid var(--paper2);border-radius:20px;padding:5px 12px;font-size:12px;cursor:pointer;background:white;color:var(--ink2);transition:all .15s;font-family:'Noto Sans JP',sans-serif;}
+.schip.selected{border-color:var(--navy);background:var(--navy);color:white;}
+.ai-ta{width:100%;padding:10px 12px;border:1.5px solid var(--paper2);border-radius:8px;font-family:'Noto Sans JP',sans-serif;font-size:13px;background:white;color:var(--ink);outline:none;margin-bottom:12px;resize:none;min-height:70px;line-height:1.7;}
+.ai-ta:focus{border-color:var(--navy);}
+.run-btn{width:100%;padding:14px;background:var(--navy);color:white;border:none;border-radius:var(--r);font-family:'Noto Serif JP',serif;font-size:15px;letter-spacing:.08em;cursor:pointer;transition:opacity .2s;display:flex;flex-direction:column;align-items:center;gap:3px;}
+.run-btn:disabled{opacity:.4;}
+.rsub{font-family:'Noto Sans JP',sans-serif;font-size:11px;opacity:.65;}
 /* Layers panel */
-.layer-list { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.layer-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  background: white;
-  border: 1.5px solid var(--paper2);
-  border-radius: 8px;
-  padding: 8px 10px;
-  cursor: pointer;
-}
-.layer-item.active { border-color: var(--navy); }
-.layer-thumb {
-  width: 40px; height: 30px;
-  background: var(--paper2);
-  border-radius: 4px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.layer-thumb canvas { width: 40px; height: 30px; }
-.layer-name { font-size: 13px; flex: 1; }
-.layer-vis {
-  background: none;
-  border: none;
-  font-size: 16px;
-  cursor: pointer;
-  color: var(--ink2);
-  padding: 4px;
-}
-
-/* Export panel */
-.export-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.exp-btn {
-  border: 1.5px solid var(--paper2);
-  border-radius: 10px;
-  padding: 14px 10px;
-  text-align: center;
-  cursor: pointer;
-  background: white;
-  transition: all 0.15s;
-}
-.exp-btn:active { background: var(--paper2); }
-.exp-icon { font-size: 24px; display: block; margin-bottom: 4px; }
-.exp-name { font-size: 12px; font-weight: 500; }
-.exp-desc { font-size: 10px; color: var(--ink2); margin-top: 2px; }
-
-/* Snackbar */
-.snack {
-  position: fixed;
-  bottom: 80px;
-  left: 50%;
-  transform: translateX(-50%) translateY(40px);
-  background: rgba(28,43,74,0.95);
-  color: white;
-  padding: 9px 18px;
-  border-radius: 20px;
-  font-size: 13px;
-  z-index: 500;
-  transition: transform 0.25s, opacity 0.25s;
-  opacity: 0;
-  white-space: nowrap;
-}
-.snack.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-/* Diary format preview in export */
-.diary-format-preview {
-  background: white;
-  border: 1px solid var(--paper2);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 12px;
-}
-.dfp-bar {
-  background: var(--navy);
-  color: white;
-  padding: 6px 12px;
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-}
-.dfp-body {
-  display: flex;
-  gap: 10px;
-  padding: 10px;
-}
-.dfp-img {
-  width: 90px;
-  height: 70px;
-  background: var(--paper2);
-  border-radius: 4px;
-  flex-shrink: 0;
-  overflow: hidden;
-}
-.dfp-img canvas { width: 90px; height: 70px; }
-.dfp-lines { flex: 1; }
-.dfp-line { height: 1px; background: var(--paper2); margin-bottom: 10px; }
-
-/* Canvas zoom controls */
-.zoom-ctrl {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.zbtn {
-  background: rgba(28,43,74,0.8);
-  color: white;
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 6px;
-  width: 32px; height: 32px;
-  font-size: 16px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Undo/Redo count badge */
-.history-badge {
-  position: absolute;
-  left: 10px;
-  bottom: 10px;
-  background: rgba(28,43,74,0.7);
-  color: rgba(255,255,255,0.5);
-  font-size: 10px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  pointer-events: none;
-}
-
-/* API key mini-sheet */
-.key-section { margin-bottom: 12px; }
-.key-label { font-size: 12px; color: var(--ink2); margin-bottom: 4px; }
-.key-input {
-  width: 100%;
-  padding: 9px 12px;
-  border: 1.5px solid var(--paper2);
-  border-radius: 8px;
-  font-size: 13px;
-  font-family: monospace;
-  background: white;
-  color: var(--ink);
-  outline: none;
-}
-.key-input:focus { border-color: var(--navy); }
-.key-note { font-size: 11px; color: var(--ink2); margin-top: 4px; line-height: 1.5; }
+.layer-list{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+.layer-item{display:flex;align-items:center;gap:10px;background:white;border:2px solid var(--paper2);border-radius:8px;padding:8px 10px;cursor:pointer;transition:border-color .15s;}
+.layer-item.active{border-color:var(--navy);}
+.lthumb{width:48px;height:34px;background:var(--paper2);border-radius:4px;overflow:hidden;flex-shrink:0;}
+.lthumb canvas{width:48px;height:34px;}
+.lname{font-size:13px;flex:1;}
+.lvis{background:none;border:none;font-size:16px;cursor:pointer;color:var(--ink2);padding:4px;}
+.lopacity-wrap{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink2);}
+/* Import banner */
+.import-banner{background:linear-gradient(90deg,#2B4F35,#4A7C5A);color:white;padding:8px 14px;display:none;align-items:center;gap:8px;font-size:12px;flex-shrink:0;}
+.import-banner.show{display:flex;}
+.import-banner button{background:rgba(255,255,255,.25);border:none;color:white;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;margin-left:auto;}
+/* Export */
+.exp-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.exp-btn{border:1.5px solid var(--paper2);border-radius:10px;padding:14px 10px;text-align:center;cursor:pointer;background:white;transition:all .15s;}
+.exp-btn:active{background:var(--paper2);}
+.ei{font-size:24px;display:block;margin-bottom:4px;}
+.en{font-size:12px;font-weight:500;}
+.ed{font-size:10px;color:var(--ink2);margin-top:2px;}
+.dfp{background:white;border:1px solid var(--paper2);border-radius:8px;overflow:hidden;margin-bottom:12px;}
+.dfp-bar{background:var(--navy);color:white;padding:6px 12px;font-size:12px;display:flex;justify-content:space-between;}
+.dfp-body{display:flex;gap:10px;padding:10px;}
+.dfp-img{width:90px;height:68px;background:var(--paper2);border-radius:4px;flex-shrink:0;overflow:hidden;}
+.dfp-lines{flex:1;}
+.dfp-line{height:1px;background:var(--paper2);margin-bottom:10px;}
+/* Settings */
+.krow{margin-bottom:12px;}
+.klabel{font-size:12px;color:var(--ink2);margin-bottom:4px;}
+.kinput{width:100%;padding:9px 12px;border:1.5px solid var(--paper2);border-radius:8px;font-size:13px;font-family:monospace;background:white;color:var(--ink);outline:none;}
+.kinput:focus{border-color:var(--navy);}
+.knote{font-size:11px;color:var(--ink2);margin-top:4px;line-height:1.5;}
+/* AI result */
+#ai-result-area{margin-top:14px;display:none;}
+#ai-result-text{font-size:13px;line-height:1.8;color:var(--ink);background:white;border-radius:8px;padding:12px;border:1px solid var(--paper2);}
+#ai-color-swatches{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+/* Snack */
+.snack{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(40px);background:rgba(28,43,74,.95);color:white;padding:9px 18px;border-radius:20px;font-size:13px;z-index:500;transition:transform .25s,opacity .25s;opacity:0;white-space:nowrap;pointer-events:none;}
+.snack.show{transform:translateX(-50%) translateY(0);opacity:1;}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
-  <div style="flex:1">
-    <h1>✏️ Illust Studio</h1>
-  </div>
-  <button class="tbtn" style="background:rgba(200,150,60,0.2); border-color:var(--gold); color:var(--gold);"
-    onclick="openPanel('undo-hint')" id="undo-btn">↩ 戻す</button>
-  <button class="tbtn" onclick="redo()" style="color:rgba(255,255,255,0.5);">↪ やり直し</button>
+  <button class="tbtn" onclick="goHome()" style="padding:5px 10px;font-size:12px;">← ホーム</button>
+  <h1>✏️ Draw</h1>
+  <button class="tbtn" id="undo-btn">↩</button>
+  <button class="tbtn" onclick="redo()">↪</button>
+  <span class="hbadge">手描き</span>
 </header>
 
-<!-- TOOL BAR -->
+<!-- concept下書き受け取りバナー -->
+<div class="import-banner" id="import-banner">
+  <span>💡 Conceptから下書きを受け取りました</span>
+  <button onclick="dismissImportBanner()">✕</button>
+</div>
+
 <div class="toolbar">
-  <!-- Tools -->
   <button class="tbtn active" id="tool-pen" onclick="setTool('pen')">🖊 ペン</button>
   <button class="tbtn" id="tool-brush" onclick="setTool('brush')">🖌 ブラシ</button>
   <button class="tbtn" id="tool-pencil" onclick="setTool('pencil')">✏️ 鉛筆</button>
   <button class="tbtn" id="tool-eraser" onclick="setTool('eraser')">⬜ 消しゴム</button>
-  <div class="tool-sep"></div>
-  <!-- Size -->
-  <div class="size-wrap">
-    <span>太さ</span>
-    <input type="range" id="size-slider" min="1" max="40" value="4" oninput="updateSize(this.value)">
-    <span id="size-label" style="color:rgba(255,255,255,0.8); min-width:20px;">4</span>
-  </div>
-  <div class="tool-sep"></div>
-  <!-- Opacity -->
-  <div class="opacity-wrap">
-    <span>濃さ</span>
-    <input type="range" id="opacity-slider" min="10" max="100" value="90" oninput="updateOpacity(this.value)">
-    <span id="opacity-label" style="color:rgba(255,255,255,0.8); min-width:24px;">90%</span>
-  </div>
+  <div class="tsep"></div>
+  <div class="sw"><span>太さ</span><input type="range" id="size-sl" min="1" max="40" value="4" oninput="updateSize(this.value)"><span id="size-lbl" style="color:rgba(255,255,255,.8);min-width:20px;">4</span></div>
+  <div class="tsep"></div>
+  <div class="sw"><span>濃さ</span><input type="range" id="opa-sl" min="10" max="100" value="90" oninput="updateOpacity(this.value)"><span id="opa-lbl" style="color:rgba(255,255,255,.8);min-width:24px;">90%</span></div>
+  <div class="tsep"></div>
+  <button class="tbtn" id="grid-btn" onclick="toggleGrid()">⊞ グリッド</button>
 </div>
 
-<!-- COLOR BAR -->
 <div class="colorbar">
-  <div class="cswatches" id="cswatches">
-    <!-- populated by JS -->
-  </div>
-  <div style="position:relative; flex-shrink:0;">
-    <div class="custom-color-btn" title="カスタムカラー">
-      <input type="color" id="custom-color-input" value="#1C2B4A" onchange="setCustomColor(this.value)">
+  <div id="cswatches" style="display:flex;gap:6px;align-items:center;"></div>
+  <div style="position:relative;flex-shrink:0;">
+    <div class="custom-btn">
+      <input type="color" id="custom-color-in" value="#1C2B4A" onchange="setCustomColor(this.value)">
     </div>
   </div>
 </div>
 
-<!-- AI STATUS BAR -->
 <div class="ai-status" id="ai-status">
-  <span class="spin">⏳</span>
-  <span id="ai-status-text">AIが色を計算中...</span>
+  <span class="spin">⏳</span><span id="ai-status-text">AIが処理中...</span>
 </div>
 
-<!-- CANVAS -->
 <div class="canvas-container" id="canvas-container">
-  <div class="canvas-shadow-wrap" id="canvas-wrap">
-    <canvas id="drawing"></canvas>
+  <div class="canvas-wrap" id="canvas-wrap">
+    <!-- canvases injected by JS in layer order -->
   </div>
   <div class="canvas-hint" id="canvas-hint">
     <div style="font-size:32px;">✏️</div>
@@ -587,68 +185,32 @@ canvas#drawing {
     <button class="zbtn" onclick="resetZoom()">⊡</button>
     <button class="zbtn" onclick="zoom(0.8)">－</button>
   </div>
-  <div class="history-badge" id="history-badge">undo: 0</div>
+  <div class="hbadge2" id="hbadge2">undo: 0</div>
 </div>
 
-<!-- BOTTOM TABS -->
 <div class="bottom-tabs">
-  <button class="btab active" onclick="closeAllPanels()">
-    <span class="bicon">✏️</span>描く
-  </button>
-  <button class="btab" onclick="openPanel('ai')">
-    <span class="bicon">🤖</span>AI色付け
-  </button>
-  <button class="btab" onclick="openPanel('layers')">
-    <span class="bicon">📂</span>レイヤー
-  </button>
-  <button class="btab" onclick="openPanel('export')">
-    <span class="bicon">📤</span>出力
-  </button>
-  <button class="btab" onclick="openPanel('settings')">
-    <span class="bicon">⚙️</span>設定
-  </button>
+  <button class="btab active" onclick="closeAllPanels()"><span class="bi">✏️</span>描く</button>
+  <button class="btab" onclick="openPanel('ai')"><span class="bi">🤖</span>AI色付け</button>
+  <button class="btab" onclick="openPanel('layers')"><span class="bi">📂</span>レイヤー</button>
+  <button class="btab" onclick="openPanel('export')"><span class="bi">📤</span>出力</button>
+  <button class="btab" onclick="openPanel('settings')"><span class="bi">⚙️</span>設定</button>
 </div>
 
-<!-- ── PANEL: AI COLOR ── -->
+<!-- AI PANEL -->
 <div class="panel-overlay" id="panel-ai" onclick="closePanelOverlay(event,'panel-ai')">
   <div class="panel-sheet">
-    <div class="sheet-drag"></div>
-    <div class="sheet-head">
-      <span>🤖 AI色付けアシスタント</span>
-      <button class="sheet-close" onclick="closePanel('ai')">✕</button>
-    </div>
-    <div class="ai-panel">
-
-      <div style="font-size:12px; color:var(--ink2); margin-bottom:10px; line-height:1.6;">
-        あなたが描いた輪郭線をAIに渡して、色を提案・塗りつけしてもらいます。<br>
-        <strong style="color:var(--ink);">あなたの絵が主役です。</strong>AIは塗り担当です。
-      </div>
-
+    <div class="sdrag"></div>
+    <div class="shead"><span>🤖 AI色付けアシスタント</span><button class="sclose" onclick="closePanel('ai')">✕</button></div>
+    <div class="sbody">
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:10px;line-height:1.6;">あなたが描いた輪郭線をAIに渡して色・テクスチャを提案してもらいます。<br><strong style="color:var(--ink);">あなたの絵が主役です。</strong></div>
       <div class="ai-mode-grid">
-        <div class="ai-mode-btn selected" data-mode="suggest" onclick="selectAiMode(this)">
-          <span class="mi">💬</span>
-          <div class="mt">色の提案のみ</div>
-          <div class="ms">どんな色が合うか<br>テキストで教えてくれる</div>
-        </div>
-        <div class="ai-mode-btn" data-mode="colorize" onclick="selectAiMode(this)">
-          <span class="mi">🎨</span>
-          <div class="mt">自動で色を塗る</div>
-          <div class="ms">輪郭に沿ってカラーレイヤーを生成</div>
-        </div>
-        <div class="ai-mode-btn" data-mode="texture" onclick="selectAiMode(this)">
-          <span class="mi">💧</span>
-          <div class="mt">画材テクスチャを乗せる</div>
-          <div class="ms">水彩・鉛筆風の質感を追加</div>
-        </div>
-        <div class="ai-mode-btn" data-mode="describe" onclick="selectAiMode(this)">
-          <span class="mi">🔍</span>
-          <div class="mt">絵を読んでもらう</div>
-          <div class="ms">何が描かれているか<br>フィードバックをくれる</div>
-        </div>
+        <div class="ai-mode-btn selected" data-mode="suggest" onclick="selectAiMode(this)"><span class="mi">💬</span><div class="mt">色の提案</div><div class="ms">カラーコードで提案</div></div>
+        <div class="ai-mode-btn" data-mode="colorize" onclick="selectAiMode(this)"><span class="mi">🎨</span><div class="mt">部位ごとの色指示</div><div class="ms">塗り方まで詳しく</div></div>
+        <div class="ai-mode-btn" data-mode="texture" onclick="selectAiMode(this)"><span class="mi">💧</span><div class="mt">画材テクスチャ</div><div class="ms">質感の出し方</div></div>
+        <div class="ai-mode-btn" data-mode="describe" onclick="selectAiMode(this)"><span class="mi">🔍</span><div class="mt">絵を読んでもらう</div><div class="ms">フィードバック</div></div>
       </div>
-
-      <div style="font-size:12px; color:var(--ink2); margin-bottom:6px;">画材スタイル（テクスチャ用）</div>
-      <div class="style-chips-mini" id="style-chips">
+      <div style="font-size:12px;color:var(--ink2);margin-bottom:6px;">画材スタイル</div>
+      <div class="schips" id="style-chips">
         <span class="schip selected" data-s="watercolor">💧 水彩</span>
         <span class="schip" data-s="pencil">✏️ 鉛筆</span>
         <span class="schip" data-s="acrylic">🖌 アクリル</span>
@@ -656,165 +218,532 @@ canvas#drawing {
         <span class="schip" data-s="pastel">🌈 パステル</span>
         <span class="schip" data-s="oil">🎭 油彩</span>
       </div>
-
-      <textarea class="ai-prompt-input" id="ai-prompt" placeholder="追加の指示（任意）&#10;例：「夕暮れの暖かい雰囲気で」「青系でまとめて」「水彩のにじみを強めに」"></textarea>
-
-      <button class="run-btn" id="run-ai-btn" onclick="runAI()">
-        ✨ AIに依頼する
-        <span class="rsub">あなたの輪郭をキープしたまま処理します</span>
-      </button>
-
-      <div id="ai-result-area" style="margin-top:14px; display:none;">
-        <div style="font-size:12px; color:var(--ink2); margin-bottom:8px; letter-spacing:.05em;">AIからの提案</div>
-        <div id="ai-result-text" style="font-size:13px; line-height:1.8; color:var(--ink); background:white; border-radius:8px; padding:12px; border:1px solid var(--paper2);"></div>
-        <div id="ai-color-swatches" style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;"></div>
+      <textarea class="ai-ta" id="ai-prompt" placeholder="追加の指示（任意）&#10;例：「夕暮れの暖かい雰囲気で」「青系でまとめて」"></textarea>
+      <button class="run-btn" id="run-ai-btn" onclick="runAI()">✨ AIに依頼する<span class="rsub">あなたの輪郭をキープして処理します</span></button>
+      <div id="ai-result-area">
+        <div style="font-size:12px;color:var(--ink2);margin-bottom:8px;">AIからの提案</div>
+        <div id="ai-result-text"></div>
+        <div id="ai-color-swatches"></div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── PANEL: LAYERS ── -->
+<!-- LAYERS PANEL -->
 <div class="panel-overlay" id="panel-layers" onclick="closePanelOverlay(event,'panel-layers')">
   <div class="panel-sheet">
-    <div class="sheet-drag"></div>
-    <div class="sheet-head">
-      <span>📂 レイヤー</span>
-      <button class="sheet-close" onclick="closePanel('layers')">✕</button>
-    </div>
-    <div class="sheet-body">
+    <div class="sdrag"></div>
+    <div class="shead"><span>📂 レイヤー</span><button class="sclose" onclick="closePanel('layers')">✕</button></div>
+    <div class="sbody">
       <div class="layer-list" id="layer-list"></div>
-      <div style="display:flex; gap:8px;">
-        <button class="tbtn" style="background:var(--navy);color:white;border-color:var(--navy);flex:1;padding:10px;" onclick="addLayer()">＋ レイヤー追加</button>
-        <button class="tbtn" style="color:var(--red);border-color:var(--red);flex:1;padding:10px;" onclick="deleteLayer()">🗑 削除</button>
+      <div style="display:flex;gap:8px;margin-bottom:12px;">
+        <button class="tbtn" style="background:var(--navy);color:white;border-color:var(--navy);flex:1;padding:10px;" onclick="addColorLayer()">＋ 色塗りレイヤー</button>
+        <button class="tbtn" style="color:var(--red);border-color:var(--red);flex:1;padding:10px;" onclick="deleteActiveLayer()">🗑 削除</button>
       </div>
-      <div style="font-size:11px; color:var(--ink2); margin-top:10px; line-height:1.6;">
-        💡 レイヤーを分けると：輪郭を別レイヤーに描いて、色塗りレイヤーを下に追加できます。
+      <div style="font-size:11px;color:var(--ink2);line-height:1.7;">
+        💡 <strong>輪郭</strong>レイヤーで線を描き、<strong>色塗り</strong>レイヤーを下に追加して色を塗ると重なります。<br>
+        下書きレイヤー（Conceptから受信）は半透明で表示されます。
       </div>
     </div>
   </div>
 </div>
 
-<!-- ── PANEL: EXPORT ── -->
+<!-- EXPORT PANEL -->
 <div class="panel-overlay" id="panel-export" onclick="closePanelOverlay(event,'panel-export')">
   <div class="panel-sheet">
-    <div class="sheet-drag"></div>
-    <div class="sheet-head">
-      <span>📤 保存・出力</span>
-      <button class="sheet-close" onclick="closePanel('export')">✕</button>
-    </div>
-    <div class="sheet-body">
-      <div class="diary-format-preview">
-        <div class="dfp-bar">
-          <span id="export-date-label">—</span>
-          <span style="opacity:.6; font-size:11px;">My Sketch Book</span>
-        </div>
+    <div class="sdrag"></div>
+    <div class="shead"><span>📤 保存・出力</span><button class="sclose" onclick="closePanel('export')">✕</button></div>
+    <div class="sbody">
+      <div class="dfp">
+        <div class="dfp-bar"><span id="exp-date">—</span><span style="opacity:.6;font-size:11px;">My Sketch Book</span></div>
         <div class="dfp-body">
-          <div class="dfp-img"><canvas id="thumb-canvas"></canvas></div>
-          <div class="dfp-lines">
-            <div class="dfp-line"></div>
-            <div class="dfp-line"></div>
-            <div class="dfp-line"></div>
-            <div class="dfp-line"></div>
-          </div>
+          <div class="dfp-img"><canvas id="thumb-cv" width="90" height="68"></canvas></div>
+          <div class="dfp-lines"><div class="dfp-line"></div><div class="dfp-line"></div><div class="dfp-line"></div></div>
         </div>
       </div>
-
-      <div class="export-grid">
-        <div class="exp-btn" onclick="exportAs('png')">
-          <span class="exp-icon">🖼</span>
-          <div class="exp-name">PNG保存</div>
-          <div class="exp-desc">透過対応・高解像度</div>
-        </div>
-        <div class="exp-btn" onclick="exportAs('diary')">
-          <span class="exp-icon">📔</span>
-          <div class="exp-name">日記フォーマット</div>
-          <div class="exp-desc">日付入り・テキスト欄</div>
-        </div>
-        <div class="exp-btn" onclick="exportAs('square')">
-          <span class="exp-icon">📷</span>
-          <div class="exp-name">インスタ用 1:1</div>
-          <div class="exp-desc">正方形にトリミング</div>
-        </div>
-        <div class="exp-btn" onclick="exportAs('share')">
-          <span class="exp-icon">📤</span>
-          <div class="exp-name">共有メニュー</div>
-          <div class="exp-desc">LINE・メモ帳 etc.</div>
-        </div>
+      <div class="exp-grid">
+        <div class="exp-btn" onclick="exportAs('png')"><span class="ei">🖼</span><div class="en">PNG保存</div><div class="ed">全レイヤー合成</div></div>
+        <div class="exp-btn" onclick="exportAs('diary')"><span class="ei">📔</span><div class="en">日記フォーマット</div><div class="ed">日付入り・テキスト欄</div></div>
+        <div class="exp-btn" onclick="exportAs('square')"><span class="ei">📷</span><div class="en">インスタ用 1:1</div><div class="ed">正方形</div></div>
+        <div class="exp-btn" onclick="exportAs('share')"><span class="ei">📤</span><div class="en">共有メニュー</div><div class="ed">LINE・メモ帳 etc.</div></div>
       </div>
-
-      <button class="run-btn" style="margin-top:10px; background:#2B3F1F;" onclick="exportAs('png-transparent')">
-        🔍 透過PNG（輪郭レイヤーのみ）
-        <span class="rsub">他のアプリで色塗りする用</span>
-      </button>
+      <button class="run-btn" style="margin-top:8px;background:#2B3F1F;" onclick="exportAs('outline')">🔍 輪郭レイヤーのみ（透過PNG）<span class="rsub">他アプリで色塗りする用</span></button>
+      <button class="run-btn" style="margin-top:8px;background:var(--sage);" onclick="saveToGallery()">📚 ギャラリーに保存<span class="rsub">ランチャーの最近の作品に表示</span></button>
     </div>
   </div>
 </div>
 
-<!-- ── PANEL: SETTINGS ── -->
+<!-- SETTINGS PANEL -->
 <div class="panel-overlay" id="panel-settings" onclick="closePanelOverlay(event,'panel-settings')">
   <div class="panel-sheet">
-    <div class="sheet-drag"></div>
-    <div class="sheet-head">
-      <span>⚙️ 設定</span>
-      <button class="sheet-close" onclick="closePanel('settings')">✕</button>
-    </div>
-    <div class="sheet-body">
-      <div class="key-section">
-        <div class="key-label">Claude APIキー（Anthropic）</div>
-        <input type="password" class="key-input" id="key-claude" placeholder="sk-ant-..." oninput="saveKeys()">
-      </div>
-      <div class="key-section">
-        <div class="key-label">Gemini APIキー（Google）</div>
-        <input type="password" class="key-input" id="key-gemini" placeholder="AIza..." oninput="saveKeys()">
-        <div class="key-note">⚡ Gemini Flash使用 · キーはlocalStorageのみ保存 · 外部送信しません</div>
-      </div>
-
-      <div style="margin:14px 0; border-top:1px solid var(--paper2);"></div>
-
-      <div class="key-section">
-        <div class="key-label">キャンバスサイズ</div>
-        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:6px;">
+    <div class="sdrag"></div>
+    <div class="shead"><span>⚙️ 設定</span><button class="sclose" onclick="closePanel('settings')">✕</button></div>
+    <div class="sbody">
+      <div class="krow"><div class="klabel">Claude APIキー</div><input type="password" class="kinput" id="key-claude" placeholder="sk-ant-..." oninput="saveKeys()"></div>
+      <div class="krow"><div class="klabel">Gemini APIキー</div><input type="password" class="kinput" id="key-gemini" placeholder="AIza..." oninput="saveKeys()"><div class="knote">⚡ どちらか一方でOK · localStorageのみ保存</div></div>
+      <div style="margin:14px 0;border-top:1px solid var(--paper2);"></div>
+      <div class="krow"><div class="klabel">キャンバスサイズ</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;">
           <button class="schip" onclick="resizeCanvas(800,600)">800×600</button>
-          <button class="schip" onclick="resizeCanvas(1080,1080)">1080×1080（インスタ）</button>
+          <button class="schip" onclick="resizeCanvas(1080,1080)">1080×1080</button>
           <button class="schip" onclick="resizeCanvas(1240,1748)">A4縦</button>
           <button class="schip" onclick="resizeCanvas(1748,1240)">A4横</button>
         </div>
       </div>
-
-      <div style="margin:14px 0; border-top:1px solid var(--paper2);"></div>
-
-      <button class="run-btn" style="background:var(--red);" onclick="clearCanvas()">
-        🗑 キャンバスをクリア
-      </button>
+      <div style="margin:14px 0;border-top:1px solid var(--paper2);"></div>
+      <button class="run-btn" style="background:var(--red);" onclick="clearAllLayers()">🗑 全レイヤーをクリア</button>
     </div>
   </div>
 </div>
 
 <div class="snack" id="snack"></div>
 
-<!-- ═══════════ SCRIPT ═══════════ -->
 <script>
-// ──────── STATE ────────
+// ═══════════ STATE ═══════════
 const S = {
-  tool: 'pen',
-  color: '#2E2A26',
-  size: 4,
-  opacity: 0.9,
-  drawing: false,
-  lastX: 0, lastY: 0,
-  history: [],       // undo stack (per active layer)
-  redoStack: [],
-  layers: [],
-  activeLayer: 0,
-  aiMode: 'suggest',
-  aiStyle: 'watercolor',
-  scale: 1,
-  panX: 0, panY: 0,
-  canvasW: 800,
-  canvasH: 600,
+  tool:'pen', color:'#2E2A26', size:4, opacity:0.9,
+  drawing:false, lastX:0, lastY:0,
+  history:[], redoStack:[],
+  activeLayerIdx:1,  // 0=draft,1=outline(default active)
+  aiMode:'suggest', aiStyle:'watercolor',
+  scale:1, W:800, H:600,
+  showGrid:false,
 };
 
-// ──────── PALETTE ────────
+// ═══════════ LAYERS ═══════════
+// Layer def: {id, name, canvas, ctx, visible, opacity, locked}
+// Fixed order (bottom→top): draft(0), color(1..n), outline(last), grid(overlay), cursor(overlay)
+const LAYERS = [];
+let cvDraft, cvGrid, cvCursor;
+
+function initLayers() {
+  const wrap = document.getElementById('canvas-wrap');
+  wrap.style.position = 'relative';
+  wrap.style.width = S.W + 'px';
+  wrap.style.height = S.H + 'px';
+
+  // Draft layer (receives concept import)
+  cvDraft = makeLayerCanvas('draft', S.W, S.H, 0.4);
+  cvDraft.style.pointerEvents = 'none';
+  wrap.appendChild(cvDraft);
+  LAYERS.push({ id:'draft', name:'下書き（Concept）', canvas:cvDraft, ctx:cvDraft.getContext('2d'), visible:true, opacity:0.4, locked:true });
+
+  // Default outline layer (active)
+  const cvOutline = makeLayerCanvas('outline', S.W, S.H, 1);
+  cvOutline.style.background = 'white'; // white bg only on bottom-most drawing layer
+  wrap.appendChild(cvOutline);
+  LAYERS.push({ id:'outline', name:'輪郭レイヤー', canvas:cvOutline, ctx:cvOutline.getContext('2d'), visible:true, opacity:1, locked:false });
+  LAYERS[1].ctx.fillStyle = '#FFFFFF';
+  LAYERS[1].ctx.fillRect(0,0,S.W,S.H);
+
+  // Grid overlay (always on top of drawing layers)
+  cvGrid = makeLayerCanvas('grid', S.W, S.H, 0.55);
+  cvGrid.style.pointerEvents = 'none';
+  wrap.appendChild(cvGrid);
+
+  // Cursor preview overlay
+  cvCursor = makeLayerCanvas('cursor', S.W, S.H, 1);
+  cvCursor.style.pointerEvents = 'none';
+  wrap.appendChild(cvCursor);
+
+  // Active = outline
+  S.activeLayerIdx = 1;
+  applyScale();
+  bindEvents(cvOutline);
+  drawGrid();
+}
+
+function makeLayerCanvas(id, w, h, opacity) {
+  const c = document.createElement('canvas');
+  c.id = 'cv-' + id;
+  c.width = w; c.height = h;
+  c.style.position = 'absolute';
+  c.style.top = '0'; c.style.left = '0';
+  c.style.display = 'block';
+  c.style.opacity = opacity;
+  return c;
+}
+
+function getActiveCtx() {
+  return LAYERS[S.activeLayerIdx]?.ctx || null;
+}
+function getActiveCanvas() {
+  return LAYERS[S.activeLayerIdx]?.canvas || null;
+}
+
+function addColorLayer() {
+  const wrap = document.getElementById('canvas-wrap');
+  // Insert below outline (which is always last drawing layer)
+  const outlineIdx = LAYERS.findIndex(l => l.id === 'outline');
+  const cv = makeLayerCanvas('color-' + Date.now(), S.W, S.H, 1);
+  cv.style.pointerEvents = 'none'; // set to auto when active
+  // Insert before grid in DOM
+  wrap.insertBefore(cv, cvGrid);
+  const layer = { id:'color-'+Date.now(), name:'色塗りレイヤー', canvas:cv, ctx:cv.getContext('2d'), visible:true, opacity:1, locked:false };
+  LAYERS.splice(outlineIdx, 0, layer);
+  // New active = this color layer
+  S.activeLayerIdx = outlineIdx;
+  updateActivePointerEvents();
+  renderLayerList();
+  closePanel('layers');
+  showSnack('🎨 色塗りレイヤーを追加しました');
+}
+
+function deleteActiveLayer() {
+  const l = LAYERS[S.activeLayerIdx];
+  if (!l || l.locked || l.id === 'outline') { showSnack('このレイヤーは削除できません'); return; }
+  if (!confirm(l.name + 'を削除しますか？')) return;
+  l.canvas.remove();
+  LAYERS.splice(S.activeLayerIdx, 1);
+  S.activeLayerIdx = Math.min(S.activeLayerIdx, LAYERS.filter(l=>!l.locked).length - 1);
+  // Fallback to outline
+  const oi = LAYERS.findIndex(l=>l.id==='outline');
+  if (S.activeLayerIdx < 1) S.activeLayerIdx = oi;
+  updateActivePointerEvents();
+  renderLayerList();
+}
+
+function setActiveLayerIdx(i) {
+  if (LAYERS[i]?.locked) { showSnack('このレイヤーは編集できません'); return; }
+  S.activeLayerIdx = i;
+  updateActivePointerEvents();
+  // Re-bind events to new active canvas
+  LAYERS.forEach((l,idx) => {
+    l.canvas.removeEventListener('pointerdown', onDown);
+    l.canvas.removeEventListener('pointermove', onMove);
+    l.canvas.removeEventListener('pointerup', onUp);
+    l.canvas.removeEventListener('pointercancel', onUp);
+  });
+  bindEvents(LAYERS[i].canvas);
+  renderLayerList();
+}
+
+function updateActivePointerEvents() {
+  LAYERS.forEach((l, i) => {
+    l.canvas.style.pointerEvents = (i === S.activeLayerIdx && !l.locked) ? 'auto' : 'none';
+  });
+  // Grid and cursor always none
+  cvGrid.style.pointerEvents = 'none';
+  cvCursor.style.pointerEvents = 'none';
+}
+
+function toggleLayerVisibility(i) {
+  LAYERS[i].visible = !LAYERS[i].visible;
+  LAYERS[i].canvas.style.display = LAYERS[i].visible ? 'block' : 'none';
+  renderLayerList();
+}
+
+function renderLayerList() {
+  const list = document.getElementById('layer-list');
+  // Show drawing layers only (exclude grid/cursor system layers)
+  const drawLayers = LAYERS.filter(l => l.id !== 'grid' && l.id !== 'cursor');
+  list.innerHTML = [...drawLayers].reverse().map((l) => {
+    const i = LAYERS.indexOf(l);
+    const tc_id = 'lthumb-' + i;
+    return `<div class="layer-item ${i===S.activeLayerIdx?'active':''}" onclick="setActiveLayerIdx(${i})">
+      <div class="lthumb"><canvas id="${tc_id}" width="48" height="34"></canvas></div>
+      <span class="lname">${l.locked?'🔒 ':''} ${l.name}</span>
+      <button class="lvis" onclick="event.stopPropagation();toggleLayerVisibility(${i})">${l.visible?'👁':'🙈'}</button>
+    </div>`;
+  }).join('');
+  setTimeout(() => {
+    drawLayers.forEach(l => {
+      const i = LAYERS.indexOf(l);
+      const tc = document.getElementById('lthumb-' + i);
+      if (tc) tc.getContext('2d').drawImage(l.canvas, 0, 0, 48, 34);
+    });
+  }, 30);
+}
+
+// ═══════════ CANVAS SCALE ═══════════
+function applyScale() {
+  const cont = document.getElementById('canvas-container');
+  const cw = cont.clientWidth - 20;
+  const ch = cont.clientHeight - 20;
+  S.scale = Math.min(cw/S.W, ch/S.H, 1.5);
+  setWrapSize();
+}
+function setWrapSize() {
+  const wrap = document.getElementById('canvas-wrap');
+  const sw = S.W * S.scale;
+  const sh = S.H * S.scale;
+  wrap.style.width = sw + 'px';
+  wrap.style.height = sh + 'px';
+  LAYERS.forEach(l => {
+    l.canvas.style.width = sw + 'px';
+    l.canvas.style.height = sh + 'px';
+  });
+  cvGrid.style.width = sw + 'px';
+  cvGrid.style.height = sh + 'px';
+  cvCursor.style.width = sw + 'px';
+  cvCursor.style.height = sh + 'px';
+}
+function zoom(f) { S.scale = Math.min(Math.max(S.scale*f,0.15),4); setWrapSize(); }
+function resetZoom() { applyScale(); }
+
+function resizeCanvas(w, h) {
+  if (!confirm('キャンバスサイズを変更すると全レイヤーがクリアされます。')) return;
+  S.W = w; S.H = h;
+  LAYERS.forEach(l => {
+    l.canvas.width = w; l.canvas.height = h;
+    if (l.id === 'outline') { l.ctx.fillStyle='#FFFFFF'; l.ctx.fillRect(0,0,w,h); }
+  });
+  cvGrid.width = w; cvGrid.height = h;
+  cvCursor.width = w; cvCursor.height = h;
+  S.history=[]; S.redoStack=[];
+  applyScale(); drawGrid(); updateHistBadge();
+  closePanel('settings');
+}
+
+// ═══════════ POINTER EVENTS ═══════════
+function bindEvents(canvas) {
+  canvas.addEventListener('pointerdown', onDown);
+  canvas.addEventListener('pointermove', onMove);
+  canvas.addEventListener('pointerup', onUp);
+  canvas.addEventListener('pointercancel', onUp);
+  canvas.addEventListener('pointerleave', onUp);
+}
+
+function getPos(e) {
+  const canvas = getActiveCanvas();
+  const rect = canvas.getBoundingClientRect();
+  return { x:(e.clientX-rect.left)/S.scale, y:(e.clientY-rect.top)/S.scale };
+}
+
+function onDown(e) {
+  e.preventDefault();
+  if (!e.isPrimary) return;
+  S.drawing = true;
+  const p = getPos(e);
+  S.lastX = p.x; S.lastY = p.y;
+  const c = getActiveCtx();
+  if (!c) return;
+  S.history.push(c.getImageData(0,0,S.W,S.H));
+  S.redoStack = [];
+  if (S.history.length > 25) S.history.shift();
+  updateHistBadge();
+  applyStroke(c, p.x, p.y, p.x, p.y, e.pressure||1);
+  document.getElementById('canvas-hint').classList.add('hidden');
+}
+
+function onMove(e) {
+  e.preventDefault();
+  const p = getPos(e);
+  drawCursorPreview(p.x, p.y);
+  if (!S.drawing) return;
+  const c = getActiveCtx();
+  if (!c) return;
+  applyStroke(c, S.lastX, S.lastY, p.x, p.y, e.pressure||1);
+  S.lastX = p.x; S.lastY = p.y;
+}
+
+function onUp(e) { S.drawing = false; }
+
+// ═══════════ STROKE ENGINE ═══════════
+function applyStroke(ctx, x0, y0, x1, y1, pressure) {
+  ctx.save();
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  const sz = S.size * pressure;
+
+  if (S.tool === 'eraser') {
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = 'rgba(0,0,0,1)';
+    ctx.lineWidth = sz * 2.5;
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+
+  } else if (S.tool === 'pen') {
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = S.opacity;
+    ctx.strokeStyle = S.color;
+    ctx.lineWidth = sz;
+    ctx.beginPath(); ctx.moveTo(x0,y0); ctx.lineTo(x1,y1); ctx.stroke();
+
+  } else if (S.tool === 'brush') {
+    // 水彩にじみ: 複数の半透明な楕円を散布
+    ctx.globalCompositeOperation = 'source-over';
+    const dist = Math.hypot(x1-x0, y1-y0) || 1;
+    const steps = Math.max(1, Math.floor(dist / (sz*0.4)));
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const cx = x0 + (x1-x0)*t;
+      const cy = y0 + (y1-y0)*t;
+      const r = sz * (0.8 + Math.random()*0.5) * pressure;
+      const a = S.opacity * (0.05 + Math.random()*0.08);
+      ctx.globalAlpha = a;
+      ctx.fillStyle = S.color;
+      ctx.beginPath();
+      ctx.ellipse(
+        cx + (Math.random()-0.5)*r*0.6,
+        cy + (Math.random()-0.5)*r*0.6,
+        r * (0.7+Math.random()*0.6),
+        r * (0.5+Math.random()*0.5),
+        Math.random()*Math.PI, 0, Math.PI*2
+      );
+      ctx.fill();
+    }
+
+  } else if (S.tool === 'pencil') {
+    // 鉛筆ざらつき: 主線 + 細かいノイズ点
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.globalAlpha = S.opacity * 0.75;
+    ctx.strokeStyle = S.color;
+    ctx.lineWidth = sz * 0.7;
+    // 主線 (わずかにぶれる)
+    ctx.beginPath();
+    ctx.moveTo(x0+(Math.random()-0.5)*0.6, y0+(Math.random()-0.5)*0.6);
+    ctx.lineTo(x1+(Math.random()-0.5)*0.6, y1+(Math.random()-0.5)*0.6);
+    ctx.stroke();
+    // ざらつきノイズ
+    ctx.globalAlpha = S.opacity * 0.18;
+    ctx.lineWidth = 0.5;
+    const cnt = Math.max(2, Math.floor(sz * 1.5));
+    for (let i = 0; i < cnt; i++) {
+      const tx = x0+(x1-x0)*Math.random() + (Math.random()-0.5)*sz*1.5;
+      const ty = y0+(y1-y0)*Math.random() + (Math.random()-0.5)*sz*1.5;
+      ctx.beginPath();
+      ctx.arc(tx, ty, Math.random()*0.8, 0, Math.PI*2);
+      ctx.fill();
+    }
+  }
+  ctx.restore();
+}
+
+// ═══════════ CURSOR PREVIEW ═══════════
+function drawCursorPreview(x, y) {
+  const c = cvCursor.getContext('2d');
+  c.clearRect(0,0,S.W,S.H);
+  c.save();
+  c.globalAlpha = 0.5;
+  c.strokeStyle = 'rgba(255,255,255,0.8)';
+  c.lineWidth = 1/S.scale;
+  const r = (S.size * 0.5) + 2;
+  c.beginPath(); c.arc(x,y,r,0,Math.PI*2); c.stroke();
+  c.restore();
+}
+
+// ═══════════ GRID (三分割法) ═══════════
+function drawGrid() {
+  const c = cvGrid.getContext('2d');
+  c.clearRect(0,0,S.W,S.H);
+  if (!S.showGrid) return;
+  c.save();
+  c.strokeStyle = 'rgba(100,160,255,0.6)';
+  c.lineWidth = 1;
+  c.setLineDash([4,4]);
+  // Vertical
+  [1/3, 2/3].forEach(f => {
+    c.beginPath(); c.moveTo(S.W*f,0); c.lineTo(S.W*f,S.H); c.stroke();
+  });
+  // Horizontal
+  [1/3, 2/3].forEach(f => {
+    c.beginPath(); c.moveTo(0,S.H*f); c.lineTo(S.W,S.H*f); c.stroke();
+  });
+  c.restore();
+}
+
+function toggleGrid() {
+  S.showGrid = !S.showGrid;
+  document.getElementById('grid-btn').classList.toggle('active', S.showGrid);
+  drawGrid();
+  showSnack(S.showGrid ? '⊞ グリッド ON' : '⊞ グリッド OFF');
+}
+
+// ═══════════ UNDO / REDO ═══════════
+document.addEventListener('keydown', e => {
+  if ((e.metaKey||e.ctrlKey) && e.key==='z') { e.preventDefault(); undo(); }
+  if ((e.metaKey||e.ctrlKey) && e.key==='y') { e.preventDefault(); redo(); }
+});
+document.getElementById('undo-btn').addEventListener('click', undo);
+
+function undo() {
+  if (!S.history.length) { showSnack('これ以上戻れません'); return; }
+  const c = getActiveCtx(); if (!c) return;
+  S.redoStack.push(c.getImageData(0,0,S.W,S.H));
+  c.putImageData(S.history.pop(), 0, 0);
+  updateHistBadge();
+}
+function redo() {
+  if (!S.redoStack.length) { showSnack('やり直す操作がありません'); return; }
+  const c = getActiveCtx(); if (!c) return;
+  S.history.push(c.getImageData(0,0,S.W,S.H));
+  c.putImageData(S.redoStack.pop(), 0, 0);
+  updateHistBadge();
+}
+function updateHistBadge() {
+  document.getElementById('hbadge2').textContent = 'undo: ' + S.history.length;
+}
+
+function clearAllLayers() {
+  if (!confirm('全レイヤーをクリアしますか？')) return;
+  LAYERS.forEach(l => {
+    if (l.locked) return;
+    l.ctx.clearRect(0,0,S.W,S.H);
+    if (l.id === 'outline') { l.ctx.fillStyle='#FFFFFF'; l.ctx.fillRect(0,0,S.W,S.H); }
+  });
+  S.history=[]; S.redoStack=[];
+  document.getElementById('canvas-hint').classList.remove('hidden');
+  closePanel('settings');
+  updateHistBadge();
+}
+
+// ═══════════ CONCEPT IMPORT (bridge.js inline) ═══════════
+function checkConceptImport() {
+  const hasHash = window.location.hash.startsWith('#import');
+  const raw = localStorage.getItem('is_transfer');
+  if (!raw && !hasHash) return;
+  try {
+    const payload = JSON.parse(raw || '{}');
+    if (payload.source === 'concept' && payload.imageDataURL) {
+      const img = new Image();
+      img.onload = () => {
+        const dctx = LAYERS[0].ctx; // draft layer
+        dctx.clearRect(0,0,S.W,S.H);
+        // Fit image into canvas
+        const scale = Math.min(S.W/img.width, S.H/img.height, 1);
+        const dx = (S.W - img.width*scale)/2;
+        const dy = (S.H - img.height*scale)/2;
+        dctx.drawImage(img, dx, dy, img.width*scale, img.height*scale);
+        LAYERS[0].visible = true;
+        LAYERS[0].canvas.style.display = 'block';
+        document.getElementById('import-banner').classList.add('show');
+        document.getElementById('canvas-hint').classList.add('hidden');
+        showSnack('💡 下書きレイヤーに展開しました');
+      };
+      img.src = payload.imageDataURL;
+      localStorage.removeItem('is_transfer');
+      if (hasHash) window.location.hash = '';
+    }
+  } catch(e) { console.warn('[draw] import parse error', e); }
+}
+
+function dismissImportBanner() {
+  document.getElementById('import-banner').classList.remove('show');
+}
+
+// ═══════════ FLATTEN (合成) ═══════════
+function flattenToCanvas() {
+  const out = document.createElement('canvas');
+  out.width = S.W; out.height = S.H;
+  const ctx = out.getContext('2d');
+  // Draw all visible layers except draft, grid, cursor
+  LAYERS.forEach(l => {
+    if (!l.visible) return;
+    if (l.id === 'draft') return; // exclude draft from output
+    ctx.save();
+    ctx.globalAlpha = l.opacity;
+    ctx.drawImage(l.canvas, 0, 0);
+    ctx.restore();
+  });
+  return out;
+}
+
+function getOutlineCanvas() {
+  return LAYERS.find(l => l.id === 'outline')?.canvas || null;
+}
+
+// ═══════════ PALETTE ═══════════
 const PALETTE = [
   '#2E2A26','#FFFFFF','#F5F0E8',
   '#C0392B','#E67E22','#F1C40F',
@@ -826,11 +755,11 @@ const PALETTE = [
 
 function buildPalette() {
   const wrap = document.getElementById('cswatches');
-  PALETTE.forEach((c, i) => {
+  PALETTE.forEach((c,i) => {
     const d = document.createElement('div');
-    d.className = 'cswatch' + (i === 0 ? ' active' : '');
+    d.className = 'cswatch' + (i===0?' active':'');
     d.style.background = c;
-    d.style.border = c === '#FFFFFF' ? '2px solid rgba(255,255,255,0.4)' : '2.5px solid transparent';
+    d.style.border = c==='#FFFFFF'?'2px solid rgba(255,255,255,.4)':'2.5px solid transparent';
     d.title = c;
     d.onclick = () => selectColor(c, d);
     wrap.appendChild(d);
@@ -839,587 +768,236 @@ function buildPalette() {
 
 function selectColor(c, el) {
   S.color = c;
-  document.querySelectorAll('.cswatch').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.cswatch').forEach(s=>s.classList.remove('active'));
   if (el) el.classList.add('active');
-  if (S.tool === 'eraser') setTool('pen');
+  if (S.tool==='eraser') setTool('pen');
 }
-
 function setCustomColor(c) {
   S.color = c;
-  document.querySelectorAll('.cswatch').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.cswatch').forEach(s=>s.classList.remove('active'));
 }
 
-// ──────── CANVAS SETUP ────────
-let mainCanvas, ctx;
-
-function initCanvas() {
-  mainCanvas = document.getElementById('drawing');
-  ctx = mainCanvas.getContext('2d');
-  resizeCanvas(S.canvasW, S.canvasH, false);
-  // Events
-  mainCanvas.addEventListener('pointerdown', onDown);
-  mainCanvas.addEventListener('pointermove', onMove);
-  mainCanvas.addEventListener('pointerup', onUp);
-  mainCanvas.addEventListener('pointercancel', onUp);
-  mainCanvas.addEventListener('pointerleave', onUp);
-  mainCanvas.setPointerCapture;
-  // Init first layer
-  S.layers = [{ name: '輪郭レイヤー', visible: true, data: null }];
-  S.activeLayer = 0;
-  renderLayers();
-}
-
-function resizeCanvas(w, h, confirm_clear = true) {
-  if (confirm_clear && !confirm('キャンバスを変更すると現在の絵がクリアされます。')) return;
-  S.canvasW = w;
-  S.canvasH = h;
-  mainCanvas.width = w;
-  mainCanvas.height = h;
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(0, 0, w, h);
-  S.history = [];
-  S.redoStack = [];
-  fitCanvas();
-  updateHistoryBadge();
-}
-
-function fitCanvas() {
-  const cont = document.getElementById('canvas-container');
-  const cw = cont.clientWidth - 20;
-  const ch = cont.clientHeight - 20;
-  S.scale = Math.min(cw / S.canvasW, ch / S.canvasH, 1.5);
-  mainCanvas.style.width = (S.canvasW * S.scale) + 'px';
-  mainCanvas.style.height = (S.canvasH * S.scale) + 'px';
-}
-
-function zoom(factor) {
-  S.scale = Math.min(Math.max(S.scale * factor, 0.2), 4);
-  mainCanvas.style.width = (S.canvasW * S.scale) + 'px';
-  mainCanvas.style.height = (S.canvasH * S.scale) + 'px';
-}
-function resetZoom() { fitCanvas(); }
-
-// ──────── DRAWING ────────
-function getPos(e) {
-  const rect = mainCanvas.getBoundingClientRect();
-  return {
-    x: (e.clientX - rect.left) / S.scale,
-    y: (e.clientY - rect.top) / S.scale
-  };
-}
-
-function onDown(e) {
-  e.preventDefault();
-  // Only primary pointer (finger or pen)
-  if (e.pointerType === 'touch' && e.isPrimary === false) return;
-  S.drawing = true;
-  const p = getPos(e);
-  S.lastX = p.x;
-  S.lastY = p.y;
-  // Save undo snapshot
-  S.history.push(ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height));
-  S.redoStack = [];
-  if (S.history.length > 30) S.history.shift();
-  updateHistoryBadge();
-  // Pressure support
-  const pressure = e.pressure > 0 ? e.pressure : 1;
-  applyStroke(p.x, p.y, p.x, p.y, pressure);
-  // Hide hint
-  document.getElementById('canvas-hint').classList.add('hidden');
-}
-
-function onMove(e) {
-  e.preventDefault();
-  if (!S.drawing) return;
-  const p = getPos(e);
-  const pressure = e.pressure > 0 ? e.pressure : 1;
-  applyStroke(S.lastX, S.lastY, p.x, p.y, pressure);
-  S.lastX = p.x;
-  S.lastY = p.y;
-}
-
-function onUp(e) {
-  S.drawing = false;
-}
-
-function applyStroke(x0, y0, x1, y1, pressure = 1) {
-  ctx.save();
-  ctx.globalAlpha = S.opacity;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-
-  if (S.tool === 'eraser') {
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.strokeStyle = 'rgba(0,0,0,1)';
-    ctx.lineWidth = S.size * 2 * pressure;
-  } else if (S.tool === 'pen') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = S.color;
-    ctx.lineWidth = S.size * pressure;
-  } else if (S.tool === 'brush') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = S.color;
-    ctx.lineWidth = S.size * 2.5 * pressure;
-    ctx.globalAlpha = S.opacity * 0.6;
-    // Soft brush
-    const grad = ctx.createRadialGradient(x1,y1,0, x1,y1, S.size*1.5*pressure);
-    grad.addColorStop(0, S.color);
-    grad.addColorStop(1, S.color + '00');
-    ctx.strokeStyle = grad;
-  } else if (S.tool === 'pencil') {
-    ctx.globalCompositeOperation = 'source-over';
-    ctx.strokeStyle = S.color;
-    ctx.lineWidth = S.size * pressure * 0.8;
-    ctx.globalAlpha = S.opacity * 0.7;
-    // Rough texture via slight jitter
-    x1 += (Math.random()-0.5)*0.8;
-    y1 += (Math.random()-0.5)*0.8;
-  }
-
-  ctx.beginPath();
-  ctx.moveTo(x0, y0);
-  ctx.lineTo(x1, y1);
-  ctx.stroke();
-  ctx.restore();
-}
-
-// ──────── TOOLS ────────
+// ═══════════ TOOLS ═══════════
 function setTool(t) {
   S.tool = t;
-  document.querySelectorAll('[id^=tool-]').forEach(b => b.classList.remove('active'));
-  const btn = document.getElementById('tool-' + t);
+  document.querySelectorAll('[id^=tool-]').forEach(b=>b.classList.remove('active'));
+  const btn = document.getElementById('tool-'+t);
   if (btn) btn.classList.add('active');
 }
+function updateSize(v) { S.size=parseInt(v); document.getElementById('size-lbl').textContent=v; }
+function updateOpacity(v) { S.opacity=parseInt(v)/100; document.getElementById('opa-lbl').textContent=v+'%'; }
 
-function updateSize(v) {
-  S.size = parseInt(v);
-  document.getElementById('size-label').textContent = v;
-}
-
-function updateOpacity(v) {
-  S.opacity = parseInt(v) / 100;
-  document.getElementById('opacity-label').textContent = v + '%';
-}
-
-// ──────── UNDO / REDO ────────
-document.addEventListener('keydown', e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === 'z') { e.preventDefault(); undo(); }
-  if ((e.metaKey || e.ctrlKey) && e.key === 'y') { e.preventDefault(); redo(); }
-});
-
-// Also wire undo-btn in header
-document.getElementById('undo-btn').addEventListener('click', undo);
-
-function undo() {
-  if (S.history.length === 0) { showSnack('これ以上戻れません'); return; }
-  S.redoStack.push(ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height));
-  ctx.putImageData(S.history.pop(), 0, 0);
-  updateHistoryBadge();
-}
-
-function redo() {
-  if (S.redoStack.length === 0) { showSnack('やり直す操作がありません'); return; }
-  S.history.push(ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height));
-  ctx.putImageData(S.redoStack.pop(), 0, 0);
-  updateHistoryBadge();
-}
-
-function updateHistoryBadge() {
-  document.getElementById('history-badge').textContent = `undo: ${S.history.length}`;
-}
-
-function clearCanvas() {
-  if (!confirm('キャンバスをクリアしますか？')) return;
-  S.history.push(ctx.getImageData(0, 0, mainCanvas.width, mainCanvas.height));
-  ctx.clearRect(0, 0, mainCanvas.width, mainCanvas.height);
-  ctx.fillStyle = '#FFFFFF';
-  ctx.fillRect(0, 0, mainCanvas.width, mainCanvas.height);
-  document.getElementById('canvas-hint').classList.remove('hidden');
-  closePanel('settings');
-}
-
-// ──────── LAYERS (simplified) ────────
-function renderLayers() {
-  const list = document.getElementById('layer-list');
-  list.innerHTML = S.layers.map((l, i) => `
-    <div class="layer-item ${i === S.activeLayer ? 'active' : ''}" onclick="setActiveLayer(${i})">
-      <div class="layer-thumb">
-        <canvas id="lthumb-${i}" width="80" height="60"></canvas>
-      </div>
-      <span class="layer-name">${l.name}</span>
-      <button class="layer-vis" onclick="event.stopPropagation(); toggleLayerVis(${i})">${l.visible ? '👁' : '🙈'}</button>
-    </div>
-  `).join('');
-  // Draw thumb from main canvas (simplified: all layers share one canvas)
-  setTimeout(() => {
-    S.layers.forEach((_, i) => {
-      const tc = document.getElementById('lthumb-' + i);
-      if (tc) {
-        const tctx = tc.getContext('2d');
-        tctx.drawImage(mainCanvas, 0, 0, 80, 60);
-      }
-    });
-  }, 50);
-}
-
-function setActiveLayer(i) {
-  S.activeLayer = i;
-  renderLayers();
-}
-
-function addLayer() {
-  S.layers.push({ name: `レイヤー ${S.layers.length + 1}`, visible: true, data: null });
-  S.activeLayer = S.layers.length - 1;
-  renderLayers();
-  showSnack('レイヤーを追加しました（描画は共有キャンバス）');
-}
-
-function deleteLayer() {
-  if (S.layers.length <= 1) { showSnack('最後のレイヤーは削除できません'); return; }
-  S.layers.splice(S.activeLayer, 1);
-  S.activeLayer = Math.min(S.activeLayer, S.layers.length - 1);
-  renderLayers();
-}
-
-function toggleLayerVis(i) {
-  S.layers[i].visible = !S.layers[i].visible;
-  renderLayers();
-}
-
-// ──────── AI PANEL ────────
+// ═══════════ AI ═══════════
 function selectAiMode(el) {
-  document.querySelectorAll('.ai-mode-btn').forEach(b => b.classList.remove('selected'));
+  document.querySelectorAll('.ai-mode-btn').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');
   S.aiMode = el.dataset.mode;
 }
-
-document.querySelectorAll('.schip').forEach(c => {
-  c.addEventListener('click', function() {
-    document.querySelectorAll('#style-chips .schip').forEach(s => s.classList.remove('selected'));
+document.querySelectorAll('#style-chips .schip').forEach(c=>{
+  c.addEventListener('click', function(){
+    document.querySelectorAll('#style-chips .schip').forEach(s=>s.classList.remove('selected'));
     this.classList.add('selected');
     S.aiStyle = this.dataset.s;
   });
 });
 
 async function runAI() {
-  const claudeKey = localStorage.getItem('is_claude') || '';
-  const geminiKey = localStorage.getItem('is_gemini') || '';
-
-  if (!claudeKey && !geminiKey) {
-    showSnack('⚙️ 設定でAPIキーを入れてください');
-    openPanel('settings');
-    return;
-  }
-
+  const ck = localStorage.getItem('is_claude')||'';
+  const gk = localStorage.getItem('is_gemini')||'';
+  if (!ck && !gk) { showSnack('⚙️ 設定でAPIキーを入れてください'); openPanel('settings'); return; }
   const prompt = document.getElementById('ai-prompt').value.trim();
-  const mode = S.aiMode;
-  const style = S.aiStyle;
-
-  // Get canvas as base64
-  const imgData = mainCanvas.toDataURL('image/jpeg', 0.85).split(',')[1];
-
-  showAiStatus('AIに送信中...');
-  document.getElementById('run-ai-btn').disabled = true;
-  document.getElementById('ai-result-area').style.display = 'none';
-
-  const styleMap = {
-    watercolor:'水彩画', pencil:'鉛筆画', acrylic:'アクリル画',
-    ink:'墨絵・ペン画', pastel:'パステル画', oil:'油彩画'
+  const flat = flattenToCanvas();
+  const imgData = flat.toDataURL('image/jpeg',0.82).split(',')[1];
+  const styleMap={watercolor:'水彩画',pencil:'鉛筆画',acrylic:'アクリル画',ink:'墨絵・ペン画',pastel:'パステル画',oil:'油彩画'};
+  const sl = styleMap[S.aiStyle]||S.aiStyle;
+  const modePrompts={
+    suggest:`この手描きスケッチ（${sl}スタイルにしたい）に合う配色を提案。${prompt?'要望:'+prompt:''}背景・主役・影・ハイライトのカラーコードと理由。JSON:{"colors":[{"name":"...","hex":"#...","reason":"..."}],"overall":"...","advice":"..."}`,
+    colorize:`この手描きスケッチを${sl}スタイルで色塗りするなら各部位の色と塗り方。JSON:{"parts":[{"area":"...","color":"#...","technique":"..."}],"mood":"...","tips":"..."}`,
+    texture:`この手描きスケッチに${sl}の質感を加える手順。JSON:{"steps":[{"step":1,"action":"...","color":"#..."}],"overall_effect":"...","beginner_tip":"..."}`,
+    describe:`この手描きスケッチを優しく読み取って。JSON:{"what_i_see":"...","good_points":"...","suggestions":"...","encouragement":"..."}`
   };
-  const modePrompts = {
-    suggest: `この手描きのスケッチ（${styleMap[style]}スタイルにしたい）に合う配色を提案してください。${prompt ? '追加要望：'+prompt : ''}
-- 背景色、主役の色、影色、ハイライト色をそれぞれ具体的なカラーコード（#RRGGBB）で3〜5色提案
-- なぜその色が合うかの理由も短く
-- 素人でも分かる言葉で
-JSON形式：{"colors":[{"name":"背景","hex":"#...","reason":"..."},...],"overall":"全体の印象","advice":"塗り方のコツ"}`,
-
-    colorize: `この手描きのスケッチを${styleMap[style]}スタイルで色塗りするなら、どの部分にどんな色を使えばいいか詳しく教えてください。${prompt ? '要望：'+prompt : ''}
-- 各部位ごとに色コードと塗り方を指示
-JSON形式：{"parts":[{"area":"空","color":"#...","technique":"..."},...],"background":"#...","mood":"雰囲気","tips":"初心者へのアドバイス"}`,
-
-    texture: `この手描きスケッチに${styleMap[style]}の質感を加えるためのアドバイスをください。${prompt ? '要望：'+prompt : ''}
-- デジタルで再現するためのレイヤー順序
-- 使うべきブレンドモードや効果
-JSON形式：{"steps":[{"step":1,"action":"...","color":"#..."}],"overall_effect":"効果の説明","beginner_tip":"初心者向けのコツ"}`,
-
-    describe: `この手描きのスケッチを見て、描かれているものを優しく読み取ってください。${prompt ? ''+prompt : ''}
-- 何が描かれているか
-- 良いところ、味のある部分
-- もっと良くなるとしたら（優しく）
-JSON形式：{"what_i_see":"見えるもの","good_points":"良い点","suggestions":"改善の提案（優しく）","encouragement":"励ましの言葉"}`
-  };
-
+  document.getElementById('ai-status-text').textContent='AIが処理中...';
+  document.getElementById('ai-status').classList.add('show');
+  document.getElementById('run-ai-btn').disabled=true;
+  document.getElementById('ai-result-area').style.display='none';
   try {
-    let result;
-    if (claudeKey) {
-      result = await callClaude(claudeKey, imgData, modePrompts[mode]);
-    } else {
-      result = await callGemini(geminiKey, imgData, modePrompts[mode]);
-    }
-    displayAiResult(result, mode);
-  } catch(e) {
-    showSnack('⚠️ API エラー: ' + e.message);
-    console.error(e);
-  }
-
-  hideAiStatus();
-  document.getElementById('run-ai-btn').disabled = false;
+    let data;
+    if (ck) data = await callClaude(ck, imgData, modePrompts[S.aiMode]);
+    else    data = await callGemini(gk, imgData, modePrompts[S.aiMode]);
+    displayAiResult(data, S.aiMode);
+  } catch(e){ showSnack('⚠️ APIエラー: '+e.message); }
+  document.getElementById('ai-status').classList.remove('show');
+  document.getElementById('run-ai-btn').disabled=false;
 }
 
-async function callClaude(key, imgBase64, promptText) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 1000,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'image', source: { type: 'base64', media_type: 'image/jpeg', data: imgBase64 } },
-          { type: 'text', text: promptText }
-        ]
-      }]
-    })
-  });
-  if (!res.ok) throw new Error('Claude API ' + res.status);
-  const data = await res.json();
-  const text = data.content?.[0]?.text || '';
-  return JSON.parse(text.replace(/```json|```/g, '').trim());
+async function callClaude(key, img, text) {
+  const r = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:img}},{type:'text',text:text+'\nJSONのみ返す。コードブロックなし。'}]}]})});
+  if(!r.ok) throw new Error('Claude '+r.status);
+  const d=await r.json();
+  return JSON.parse((d.content?.[0]?.text||'').replace(/```json|```/g,'').trim());
 }
-
-async function callGemini(key, imgBase64, promptText) {
-  const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,
-    {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{
-          parts: [
-            { inline_data: { mime_type: 'image/jpeg', data: imgBase64 } },
-            { text: promptText + '\n\nJSONのみ返してください。コードブロックなし。' }
-          ]
-        }],
-        generationConfig: { maxOutputTokens: 800, temperature: 0.4 }
-      })
-    }
-  );
-  if (!res.ok) throw new Error('Gemini API ' + res.status);
-  const data = await res.json();
-  const text = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-  return JSON.parse(text.replace(/```json|```/g, '').trim());
+async function callGemini(key, img, text) {
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${key}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({contents:[{parts:[{inline_data:{mime_type:'image/jpeg',data:img}},{text:text+'\nJSONのみ返す。'}]}],generationConfig:{maxOutputTokens:800,temperature:0.4}})});
+  if(!r.ok) throw new Error('Gemini '+r.status);
+  const d=await r.json();
+  return JSON.parse((d.candidates?.[0]?.content?.parts?.[0]?.text||'').replace(/```json|```/g,'').trim());
 }
 
 function displayAiResult(data, mode) {
-  const area = document.getElementById('ai-result-area');
-  const textEl = document.getElementById('ai-result-text');
-  const swatchEl = document.getElementById('ai-color-swatches');
-  area.style.display = 'block';
-  swatchEl.innerHTML = '';
-
-  let html = '';
-  if (mode === 'suggest') {
-    html = `<strong>${data.overall || ''}</strong><br><br>`;
-    (data.colors || []).forEach(c => {
-      html += `<span style="display:inline-block;width:12px;height:12px;background:${c.hex};border-radius:50%;border:1px solid #ccc;margin-right:4px;vertical-align:middle;"></span><strong>${c.name}</strong> <code style="font-size:11px;background:#f0f0f0;padding:1px 4px;border-radius:3px;">${c.hex}</code> — ${c.reason}<br>`;
-      // Add to swatches
-      const sw = document.createElement('div');
-      sw.style.cssText = `width:36px;height:36px;border-radius:50%;background:${c.hex};cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,0.3);border:2px solid #eee;`;
-      sw.title = c.name + ' ' + c.hex;
-      sw.onclick = () => { selectColor(c.hex, null); showSnack('🎨 ' + c.name + ' を選択'); };
-      swatchEl.appendChild(sw);
+  const area=document.getElementById('ai-result-area');
+  const textEl=document.getElementById('ai-result-text');
+  const sw=document.getElementById('ai-color-swatches');
+  area.style.display='block'; sw.innerHTML='';
+  let html='';
+  if(mode==='suggest'){
+    html=`<strong>${data.overall||''}</strong><br><br>`;
+    (data.colors||[]).forEach(c=>{
+      html+=`<span style="display:inline-block;width:12px;height:12px;background:${c.hex};border-radius:50%;border:1px solid #ccc;margin-right:4px;vertical-align:middle;"></span><strong>${c.name}</strong> <code style="font-size:11px;background:#f0f0f0;padding:1px 4px;border-radius:3px;">${c.hex}</code> — ${c.reason}<br>`;
+      const s=document.createElement('div');
+      s.style.cssText=`width:34px;height:34px;border-radius:50%;background:${c.hex};cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.3);border:2px solid #eee;`;
+      s.title=c.name+' '+c.hex;
+      s.onclick=()=>{selectColor(c.hex,null);showSnack('🎨 '+c.name+' を選択');};
+      sw.appendChild(s);
     });
-    if (data.advice) html += `<br><em style="color:#7A7269;">${data.advice}</em>`;
-  } else if (mode === 'colorize') {
-    (data.parts || []).forEach(p => {
-      html += `<strong>${p.area}</strong>: <span style="display:inline-block;width:10px;height:10px;background:${p.color};border-radius:50%;border:1px solid #ccc;"></span> ${p.color} — ${p.technique}<br>`;
-    });
-    if (data.mood) html += `<br>🌟 ${data.mood}`;
-    if (data.tips) html += `<br><em style="color:#7A7269;">💡 ${data.tips}</em>`;
-  } else if (mode === 'texture') {
-    (data.steps || []).forEach(s => {
-      html += `<strong>Step ${s.step}:</strong> ${s.action}${s.color ? ' <code style="font-size:10px;background:#f0f0f0;padding:1px 3px;">' + s.color + '</code>' : ''}<br>`;
-    });
-    if (data.beginner_tip) html += `<br><em style="color:#7A7269;">💡 ${data.beginner_tip}</em>`;
-  } else if (mode === 'describe') {
-    html = `<strong>見えるもの:</strong> ${data.what_i_see}<br><br>`;
-    html += `<strong>👍 良いところ:</strong> ${data.good_points}<br><br>`;
-    html += `<strong>✨ 改善のヒント:</strong> ${data.suggestions}<br><br>`;
-    html += `<em style="color:var(--sage);">💚 ${data.encouragement}</em>`;
+    if(data.advice) html+=`<br><em style="color:var(--ink2);">${data.advice}</em>`;
+  } else if(mode==='colorize'){
+    (data.parts||[]).forEach(p=>{html+=`<strong>${p.area}</strong>: <span style="display:inline-block;width:10px;height:10px;background:${p.color};border-radius:50%;border:1px solid #ccc;"></span> ${p.color} — ${p.technique}<br>`;});
+    if(data.mood) html+=`<br>🌟 ${data.mood}`;
+    if(data.tips) html+=`<br><em style="color:var(--ink2);">💡 ${data.tips}</em>`;
+  } else if(mode==='texture'){
+    (data.steps||[]).forEach(s=>{html+=`<strong>Step ${s.step}:</strong> ${s.action}${s.color?` <code style="font-size:10px;background:#f0f0f0;padding:1px 3px;">${s.color}</code>`:''}<br>`;});
+    if(data.beginner_tip) html+=`<br><em style="color:var(--ink2);">💡 ${data.beginner_tip}</em>`;
+  } else if(mode==='describe'){
+    html=`<strong>見えるもの:</strong> ${data.what_i_see}<br><br><strong>👍 良いところ:</strong> ${data.good_points}<br><br><strong>✨ ヒント:</strong> ${data.suggestions}<br><br><em style="color:var(--sage);">💚 ${data.encouragement}</em>`;
   }
-
-  textEl.innerHTML = html;
+  textEl.innerHTML=html;
 }
 
-function showAiStatus(msg) {
-  const el = document.getElementById('ai-status');
-  document.getElementById('ai-status-text').textContent = msg;
-  el.classList.add('show');
-}
-function hideAiStatus() {
-  document.getElementById('ai-status').classList.remove('show');
+// ═══════════ GALLERY SAVE ═══════════
+function saveToGallery() {
+  const flat = flattenToCanvas();
+  const dataURL = flat.toDataURL('image/jpeg', 0.8);
+  const item = {
+    id: Date.now(),
+    source: 'draw',
+    imageDataURL: dataURL,
+    prompt: '',
+    style: S.aiStyle,
+    date: new Date().toISOString()
+  };
+  let gallery = [];
+  try { const r=localStorage.getItem('is_gallery'); if(r) gallery=JSON.parse(r); } catch(e){}
+  gallery.unshift(item);
+  if(gallery.length>60) gallery=gallery.slice(0,60);
+  try {
+    localStorage.setItem('is_gallery', JSON.stringify(gallery));
+    showSnack('📚 ギャラリーに保存しました');
+    closePanel('export');
+  } catch(e) {
+    showSnack('⚠️ 保存失敗（容量不足の可能性）');
+  }
 }
 
-// ──────── EXPORT ────────
+// ═══════════ EXPORT ═══════════
 function exportAs(type) {
-  const d = new Date();
-  const dateStr = `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
+  const flat = flattenToCanvas();
+  const d=new Date();
+  const ds=`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
 
-  if (type === 'png') {
-    const a = document.createElement('a');
-    a.href = mainCanvas.toDataURL('image/png');
-    a.download = `illust-${Date.now()}.png`;
-    a.click();
+  if(type==='png'){
+    const a=document.createElement('a'); a.href=flat.toDataURL('image/png'); a.download='illust-'+Date.now()+'.png'; a.click();
     showSnack('💾 PNG保存しました');
-
-  } else if (type === 'png-transparent') {
-    // Export with white background removed (approximate)
-    const tmp = document.createElement('canvas');
-    tmp.width = mainCanvas.width; tmp.height = mainCanvas.height;
-    const tc = tmp.getContext('2d');
-    tc.drawImage(mainCanvas, 0, 0);
-    const a = document.createElement('a');
-    a.href = tmp.toDataURL('image/png');
-    a.download = `illust-outline-${Date.now()}.png`;
-    a.click();
-    showSnack('🔍 透過PNG保存しました');
-
-  } else if (type === 'diary') {
-    const dc = document.createElement('canvas');
-    dc.width = 1240; dc.height = 930;
-    const dctx = dc.getContext('2d');
-    // Paper bg
-    dctx.fillStyle = '#F8F5F0';
-    dctx.fillRect(0,0,1240,930);
-    // Header
-    dctx.fillStyle = '#1C2B4A';
-    dctx.fillRect(0,0,1240,70);
-    dctx.fillStyle = 'white';
-    dctx.font = 'bold 26px sans-serif';
-    dctx.fillText(dateStr, 28, 44);
-    dctx.font = '14px sans-serif';
-    dctx.fillStyle = 'rgba(255,255,255,0.55)';
-    dctx.fillText('My Sketch Book', 1060, 44);
-    // Drawing
-    dctx.drawImage(mainCanvas, 24, 90, 800, 600);
-    // Lines
-    dctx.strokeStyle = '#DDD8D0';
-    dctx.lineWidth = 1;
-    for(let y=100; y<900; y+=38){
-      dctx.beginPath(); dctx.moveTo(840,y); dctx.lineTo(1216,y); dctx.stroke();
-    }
-    // Note label
-    dctx.fillStyle = '#B0A898';
-    dctx.font = '13px sans-serif';
-    dctx.fillText('今日のスケッチ', 840, 92);
-    const a = document.createElement('a');
-    a.href = dc.toDataURL('image/png');
-    a.download = `diary-${Date.now()}.png`;
-    a.click();
+  } else if(type==='outline'){
+    const oc=getOutlineCanvas();
+    if(!oc){showSnack('輪郭レイヤーが見つかりません');return;}
+    const a=document.createElement('a'); a.href=oc.toDataURL('image/png'); a.download='outline-'+Date.now()+'.png'; a.click();
+    showSnack('🔍 輪郭PNG保存しました');
+  } else if(type==='diary'){
+    const dc=document.createElement('canvas'); dc.width=1240; dc.height=930;
+    const dctx=dc.getContext('2d');
+    dctx.fillStyle='#F8F5F0'; dctx.fillRect(0,0,1240,930);
+    dctx.fillStyle='#1C2B4A'; dctx.fillRect(0,0,1240,70);
+    dctx.fillStyle='white'; dctx.font='bold 26px sans-serif'; dctx.fillText(ds,28,44);
+    dctx.font='14px sans-serif'; dctx.fillStyle='rgba(255,255,255,.55)'; dctx.fillText('My Sketch Book',1060,44);
+    dctx.drawImage(flat,24,90,800,600);
+    dctx.strokeStyle='#DDD8D0'; dctx.lineWidth=1;
+    for(let y=100;y<900;y+=38){dctx.beginPath();dctx.moveTo(840,y);dctx.lineTo(1216,y);dctx.stroke();}
+    dctx.fillStyle='#B0A898'; dctx.font='13px sans-serif'; dctx.fillText('今日のスケッチ',840,92);
+    const a=document.createElement('a'); a.href=dc.toDataURL('image/png'); a.download='diary-'+Date.now()+'.png'; a.click();
     showSnack('📔 日記フォーマットで保存しました');
-
-  } else if (type === 'square') {
-    const sq = Math.min(mainCanvas.width, mainCanvas.height);
-    const sc = document.createElement('canvas');
-    sc.width = 1080; sc.height = 1080;
-    const sctx = sc.getContext('2d');
-    sctx.fillStyle = '#FFFFFF';
-    sctx.fillRect(0,0,1080,1080);
-    const scale = 1080 / sq;
-    sctx.drawImage(mainCanvas, 0, 0, mainCanvas.width * scale, mainCanvas.height * scale);
-    const a = document.createElement('a');
-    a.href = sc.toDataURL('image/png');
-    a.download = `instagram-${Date.now()}.png`;
-    a.click();
+  } else if(type==='square'){
+    const sq=document.createElement('canvas'); sq.width=1080; sq.height=1080;
+    const sctx=sq.getContext('2d'); sctx.fillStyle='#FFFFFF'; sctx.fillRect(0,0,1080,1080);
+    const s2=Math.min(1080/S.W,1080/S.H);
+    sctx.drawImage(flat,(1080-S.W*s2)/2,(1080-S.H*s2)/2,S.W*s2,S.H*s2);
+    const a=document.createElement('a'); a.href=sq.toDataURL('image/png'); a.download='instagram-'+Date.now()+'.png'; a.click();
     showSnack('📷 インスタ用に保存しました');
-
-  } else if (type === 'share') {
-    mainCanvas.toBlob(blob => {
-      const file = new File([blob], 'illust.png', { type: 'image/png' });
-      if (navigator.share) {
-        navigator.share({ files: [file] });
-      } else {
-        showSnack('このブラウザでは共有できません');
-      }
+  } else if(type==='share'){
+    flat.toBlob(blob=>{
+      const file=new File([blob],'illust.png',{type:'image/png'});
+      if(navigator.share) navigator.share({files:[file]});
+      else showSnack('このブラウザでは共有できません');
     });
   }
-
   closePanel('export');
 }
 
-// ──────── PANELS ────────
+// ═══════════ PANELS ═══════════
 function openPanel(name) {
   closeAllPanels();
-  const el = document.getElementById('panel-' + name);
-  if (el) {
-    el.classList.add('open');
-    if (name === 'export') {
-      // Update thumb
-      const tc = document.getElementById('thumb-canvas');
-      if (tc) {
-        tc.width = 90; tc.height = 70;
-        tc.getContext('2d').drawImage(mainCanvas, 0, 0, 90, 70);
-      }
-      const d = new Date();
-      document.getElementById('export-date-label').textContent =
-        `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
-    }
-    if (name === 'layers') renderLayers();
+  const el=document.getElementById('panel-'+name);
+  if(!el) return;
+  el.classList.add('open');
+  if(name==='layers') renderLayerList();
+  if(name==='export'){
+    const tc=document.getElementById('thumb-cv');
+    if(tc){ tc.width=90;tc.height=68; tc.getContext('2d').drawImage(flattenToCanvas(),0,0,90,68); }
+    const d=new Date();
+    document.getElementById('exp-date').textContent=`${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
   }
-  document.querySelectorAll('.btab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));
 }
-
 function closePanel(name) {
-  const el = document.getElementById('panel-' + name);
-  if (el) el.classList.remove('open');
+  const el=document.getElementById('panel-'+name); if(el) el.classList.remove('open');
   document.querySelectorAll('.btab')[0].classList.add('active');
 }
-
 function closeAllPanels() {
-  document.querySelectorAll('.panel-overlay').forEach(p => p.classList.remove('open'));
-  document.querySelectorAll('.btab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.panel-overlay').forEach(p=>p.classList.remove('open'));
+  document.querySelectorAll('.btab').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.btab')[0].classList.add('active');
 }
+function closePanelOverlay(e,id) { if(e.target.id===id) closePanel(id.replace('panel-','')); }
 
-function closePanelOverlay(e, id) {
-  if (e.target.id === id) closePanel(id.replace('panel-', ''));
-}
-
-// ──────── SETTINGS KEYS ────────
-function saveKeys() {
-  const ck = document.getElementById('key-claude').value;
-  const gk = document.getElementById('key-gemini').value;
-  if (ck) localStorage.setItem('is_claude', ck);
-  if (gk) localStorage.setItem('is_gemini', gk);
+// ═══════════ SETTINGS ═══════════
+function saveKeys(){
+  const ck=document.getElementById('key-claude').value;
+  const gk=document.getElementById('key-gemini').value;
+  if(ck) localStorage.setItem('is_claude',ck); else localStorage.removeItem('is_claude');
+  if(gk) localStorage.setItem('is_gemini',gk); else localStorage.removeItem('is_gemini');
   showSnack('💾 APIキーを保存しました');
 }
+function loadKeys(){
+  const ck=localStorage.getItem('is_claude'); if(ck) document.getElementById('key-claude').value=ck;
+  const gk=localStorage.getItem('is_gemini'); if(gk) document.getElementById('key-gemini').value=gk;
+}
+function goHome(){window.location.href=window.location.pathname.includes('/draw')?'../index.html':'index.html';}
 
-function loadKeys() {
-  const ck = localStorage.getItem('is_claude');
-  const gk = localStorage.getItem('is_gemini');
-  if (ck) document.getElementById('key-claude').value = ck;
-  if (gk) document.getElementById('key-gemini').value = gk;
+// ═══════════ SNACK ═══════════
+function showSnack(msg){
+  const el=document.getElementById('snack'); el.textContent=msg;
+  el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),2500);
 }
 
-// ──────── SNACK ────────
-function showSnack(msg) {
-  const el = document.getElementById('snack');
-  el.textContent = msg;
-  el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2500);
-}
-
-// ──────── BOOT ────────
-window.onload = () => {
+// ═══════════ BOOT ═══════════
+window.onload=()=>{
   buildPalette();
-  initCanvas();
+  initLayers();
   loadKeys();
-  // Handle resize
-  window.addEventListener('resize', () => setTimeout(fitCanvas, 100));
+  checkConceptImport();
+  window.addEventListener('resize',()=>setTimeout(applyScale,100));
 };
 </script>
 </body>
 </html>
-illust-studio.html
-illust-studio.html を表示しています。 
+draw.html
+draw.html を表示しています。
