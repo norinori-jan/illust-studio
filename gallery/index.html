@@ -118,7 +118,11 @@ header h1{font-family:'Noto Serif JP',serif;font-size:15px;letter-spacing:.06em;
 </style>
 </head>
 <body>
-
+<button id="sendToQuickRef" style="
+  background:#FF2D55; color:#fff; border:none;
+  border-radius:10px; padding:10px 18px;
+  font-size:14px; font-weight:700; margin:8px 0;
+">📋 quick-refに送る</button>
 <header>
   <button class="back-btn" onclick="goHome()">← ホーム</button>
   <h1>📚 ギャラリー</h1>
@@ -603,7 +607,36 @@ function showSnack(msg) {
   el.classList.add('show');
   setTimeout(() => el.classList.remove('show'), 2500);
 }
+document.getElementById('sendToQuickRef')?.addEventListener('click', () => {
+  // 現在選択中/表示中の画像を取得
+  const canvas = document.querySelector('canvas');
+  const img    = document.querySelector('.gallery-selected img');
+
+  const dataUrl = canvas ? canvas.toDataURL('image/png')
+                : img    ? img.src
+                : null;
+
+  if (!dataUrl) {
+    alert('画像を選択してください');
+    return;
+  }
+
+  const title = document.querySelector('.gallery-title')?.textContent
+             || `illust-${new Date().toISOString().slice(0,10)}`;
+
+  localStorage.setItem('is_transfer', JSON.stringify({
+    image: dataUrl,
+    title: title,
+    source: 'illust-studio',
+    timestamp: Date.now()
+  }));
+
+  const go = confirm(`「${title}」をquick-refに送ります。\nquick-refを開きますか?`);
+  if (go) location.href = 'https://norinori-jan.github.io/quick-ref/';
+});
+
 </script>
 </body>
 </html>
+
 
