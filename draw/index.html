@@ -5,20 +5,21 @@ Gmail でのスクリーン リーダーの使用
 スレッド
 Google Workspace
 AI なら多くの作業を短時間で
-ドキュメントの下書きと推敲、会議メモとプレゼンテーションの作成、データの分析を数秒で行えます。
-15 GB 中 35% 使用済み
-利用規約 · プライバシー · プログラム ポリシー
-前回のアカウント アクティビティ: 0 分前
-他の 2 か所で開かれています · 詳細
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Draw — Illust Studio</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Illust Studio">
+  <link rel="apple-touch-icon" href="/assets/icon-192.png">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <title>Illust Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">onts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--paper:#F8F5F0;--paper2:#EDE8E0;--ink:#2E2A26;--ink2:#7A7269;--navy:#1C2B4A;--gold:#C8963C;--red:#B83A2E;--sage:#4A7C5A;--r:10px;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
@@ -129,6 +130,8 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;heigh
 .snack.show{transform:translateX(-50%) translateY(0);opacity:1;}
 </style>
 </head>
+
+
 <body>
 
 <header>
@@ -997,6 +1000,15 @@ window.onload=()=>{
   window.addEventListener('resize',()=>setTimeout(applyScale,100));
 };
 </script>
+<!-- Service Worker 登録（</body> の直前） -->
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
+
 </body>
 </html>
 draw.html

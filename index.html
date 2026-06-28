@@ -1,23 +1,17 @@
-何も選択されていません 
-
-コンテンツへ
-Gmail でのスクリーン リーダーの使用
-スレッド
-Google Workspace
-AI なら多くの作業を短時間で
-ドキュメントの下書きと推敲、会議メモとプレゼンテーションの作成、データの分析を数秒で行えます。
-15 GB 中 35% 使用済み
-利用規約 · プライバシー · プログラム ポリシー
-前回のアカウント アクティビティ: 0 分前
-他の 2 か所で開かれています · 詳細
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Illust Studio</title>
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Illust Studio">
+  <link rel="apple-touch-icon" href="/assets/icon-192.png">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+  <title>Illust Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -519,6 +513,14 @@ canvas#drawing {
 .key-note { font-size: 11px; color: var(--ink2); margin-top: 4px; line-height: 1.5; }
 </style>
 </head>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+</script>
+
 <body>
 
 <!-- HEADER -->
@@ -1418,6 +1420,13 @@ window.onload = () => {
   // Handle resize
   window.addEventListener('resize', () => setTimeout(fitCanvas, 100));
 };
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
